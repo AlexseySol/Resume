@@ -1,0 +1,96 @@
+{
+    "hero": {
+      "title": "Alexey Solyanoy",
+      "subtitle": "Prompt Engineer | Web Developer | AI Creator | Automation Specialist",
+      "location": "Kyiv, Ukraine",
+      "contactInfo": {
+        "email": "Email: alexsey.solyanoy@gmail.com",
+        "phone": "Phone: +38 (067) 642-77-75",
+        "telegram": "Telegram: [@YourUsername]",
+        "telegramChannel": "Telegram Channel: AI Innovations"
+      },
+      "telegramButton": "Write on Telegram",
+      "emailButton": "Send Email",
+      "contactButton": "Contact Me"
+    },
+    "profile": {
+      "title": "Professional Profile",
+      "description": "An enthusiastic and goal-oriented AI specialist with a deep passion for innovation and cutting-edge technologies. Extensive experience in developing AI solutions, prompt engineering, and business process automation. Runs a personal Telegram channel on AI news and innovations, sharing up-to-date research and personal developments. Always open to learning and new opportunities. I embrace change, as every innovation is a chance to grow and discover something new."
+    },
+    "skills": {
+      "title": "Core Skills and Competencies",
+      "list": {
+        "promptEngineering": "Prompt Engineering: Expert in creating and optimizing prompts for AI models. Customizes models to meet specific client tasks.",
+        "aiAssistants": "AI Assistant Development and Integration: Configures AI assistants in various messengers using platforms like Make.com, Zapier, and SendPulse to enhance client interactions.",
+        "webDevelopment": "Web Development: Professional skills in front-end development (HTML, CSS, JavaScript). Creates interactive and dynamic web applications, automating manager workflows (ProAir, ProViz projects).",
+        "chatBots": "Chatbot Creation: Develops GPT-based chatbots and integrates them into various platforms. Experience working with Node.js and the Telegraf library.",
+        "aiConsulting": "AI Innovation Consulting: Provides qualified business consultations on selecting and implementing optimal AI solutions.",
+        "aiContentCreation": "Content Creation with AI: Uses AI for creating graphic, audio, video, and textual content. Expert-level proficiency with platforms like MidJourney, ChatGPT, Claude.ai, and working with APIs such as ChatGPT, Anthropic, HuggingFace.",
+        "teaching": "Educational Materials and Training: Author of educational materials on prompt engineering and AI technologies. Conducts consultations and training courses on automation and AI implementation."
+      }
+    },
+    "experience": {
+      "title": "Work Experience",
+      "entries": [
+        {
+          "role": "Prompt Engineer and AI Specialist",
+          "company": "Freelance | 2022 – Present",
+          "details": [
+            "Participated in the development and launch of VDFY — a platform for video reviews of public opinion. Simplified the process for NGOs, made it transparent for donors, and faster thanks to AI.",
+            "Created automation systems for managers, including web development and AI tool integration, improving efficiency and enhancing client service.",
+            "Developed an AI-based audio call analyzer to improve service quality and identify key moments in client interactions.",
+            "Automated routine manager tasks, reducing operation time and increasing team productivity.",
+            "Integrated AI assistants into various messengers, improving client interactions and automating processes.",
+            "Completed over 100 orders for creating effective prompts for diverse business tasks."
+          ]
+        },
+        {
+          "role": "Web Developer",
+          "company": "Freelance | 2022 – Present",
+          "details": [
+            "Developed interactive web applications using JavaScript, enhancing user experience and site functionality.",
+            "Integrated AI bots and chatbots into client websites, improving user interactions and boosting conversion rates.",
+            "Advised companies on implementing AI solutions and automating processes, providing expert recommendations and support."
+          ]
+        }
+      ]
+    },
+    "education": {
+      "title": "Education",
+      "entries": [
+        {
+          "institution": "Luhansk National Agrarian University (LNAU)",
+          "location": "Ukraine, Luhansk-Kharkiv | 2013 – 2017",
+          "specialty": "Specialty: [Specify Your Specialty]"
+        },
+        {
+          "institution": "Prog.Academy",
+          "location": "Ukraine, Kyiv | 2022 – 2023",
+          "details": [
+            "Frontend Training Club: Training in front-end development, mastering HTML, CSS, and JavaScript.",
+            "Prompt Engineering: Courses on creating and optimizing requests for AI models.",
+            "Process Automation Course: Specialized training in automating business processes using AI technologies."
+          ]
+        }
+      ]
+    },
+    "additionalInfo": {
+      "title": "Additional Information",
+      "details": [
+        "Telegram channel on AI news and innovations: Manages a personal channel sharing current news, research, and personal developments in AI.",
+        "Languages: Ukrainian — native, Russian — fluent, English — intermediate.",
+        "Personal qualities: Communication skills, teamwork, problem-solving, critical thinking, time management, lifelong learning."
+      ]
+    },
+    "achievements": {
+      "title": "Achievements",
+      "list": [
+        "Created unique graphics for video games using AI, enhancing visuals and attracting more users.",
+        "Developed an AI-based audio call analyzer, improving service quality and communication efficiency.",
+        "Automated key manager tasks, increasing productivity and reducing time spent on routine operations.",
+        "Consulted companies like OsviTech, JetCup, AltaKav on implementing AI technologies, helping optimize processes and enhance efficiency.",
+        "Created educational resources on prompt engineering and AI, contributing to professional development and AI technology popularization."
+      ]
+    }
+  }
+  
