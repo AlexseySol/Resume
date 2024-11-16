@@ -53,7 +53,7 @@ export const Header = styled.div`
 export const ImageSection = styled.div`
   position: relative;
   width: 500px;
-  height: 700px;
+  height: 650px;
   border-radius: 20px;
   overflow: hidden;
   justify-self: flex-start;
