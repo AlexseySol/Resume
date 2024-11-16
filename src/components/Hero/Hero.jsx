@@ -1,4 +1,3 @@
-// Hero.jsx
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Send, Mail, MessageCircle, MapPin } from 'lucide-react';
@@ -10,7 +9,7 @@ import {
   ProfileImage,
   MainInfo,
   Header,
-  NameTitle,
+  ResumeTitle,
   LocationBadge,
   QuoteWrapper,
   QuoteText,
@@ -36,9 +35,30 @@ const Hero = () => {
     ? 'Інновації - це особливий інструмент, який дозволяє перетворити зміни на можливості'
     : 'Innovation is the specific tool that allows us to transform change into opportunity';
 
+  const resumeTitle = i18n.language === 'ua' 
+    ? 'Резюме Олексія С.' 
+    : 'Resume of Oleksiy S.';
+
   return (
     <>
       <HeroContainer>
+        <Header>
+          <LangSwitch>
+            <LangButton
+              active={i18n.language === 'en'}
+              onClick={() => i18n.changeLanguage('en')}
+            >
+              EN
+            </LangButton>
+            <LangButton
+              active={i18n.language === 'ua'}
+              onClick={() => i18n.changeLanguage('ua')}
+            >
+              UA
+            </LangButton>
+          </LangSwitch>
+        </Header>
+
         <ImageSection>
           <ProfileImage
             src="/images/profile.jpg"
@@ -48,27 +68,10 @@ const Hero = () => {
         </ImageSection>
 
         <ContentWrapper>
-          <Header>
-            <LangSwitch>
-              <LangButton
-                active={i18n.language === 'en'}
-                onClick={() => i18n.changeLanguage('en')}
-              >
-                EN
-              </LangButton>
-              <LangButton
-                active={i18n.language === 'ua'}
-                onClick={() => i18n.changeLanguage('ua')}
-              >
-                UA
-              </LangButton>
-            </LangSwitch>
-          </Header>
-
           <MainInfo>
-            <NameTitle>
-              {i18n.language === 'ua' ? 'Олексій Соляной' : 'Oleksiy Solyanoy'}
-            </NameTitle>
+            <ResumeTitle>
+              {resumeTitle}
+            </ResumeTitle>
 
             <SpecialtiesList>
               {specialties.map((specialty, index) => (

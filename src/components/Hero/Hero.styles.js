@@ -1,4 +1,3 @@
-// Hero.styles.js
 import styled, { keyframes } from 'styled-components';
 
 const textShine = keyframes`
@@ -14,7 +13,7 @@ const fadeIn = keyframes`
 export const HeroContainer = styled.div`
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 4rem;
@@ -30,22 +29,24 @@ export const HeroContainer = styled.div`
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-    gap: 0;
+    grid-template-rows: auto auto;
+    gap: 2rem;
     padding: 1rem;
+    height: auto;
+    min-height: 100vh;
   }
 `;
 
 export const Header = styled.div`
-  position: relative;
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 2rem;
+  position: absolute;
+  top: 2rem;
+  right: 4rem;
+  z-index: 100;
 
   @media (max-width: 1024px) {
-    padding-top: 1rem;
-    margin-bottom: 1rem;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
   }
 `;
 
@@ -78,13 +79,13 @@ export const ImageSection = styled.div`
     width: 400px;
     height: 560px;
     justify-self: center;
-    order: 2;
-    margin-top: 2rem;
+    margin-top: 4rem;
   }
 
   @media (max-width: 480px) {
     width: 320px;
     height: 448px;
+    margin-top: 3.5rem;
   }
 `;
 
@@ -99,19 +100,17 @@ export const ProfileImage = styled.img`
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  gap: 2rem;
   max-width: 800px;
-  position: relative;
+  justify-self: flex-start;
 
   @media (max-width: 1024px) {
-    order: 1;
     text-align: center;
     align-items: center;
     max-width: 600px;
     margin: 0 auto;
-    padding: 0.5rem;
-    min-height: 60vh;
+    padding: 0 1rem;
+    justify-self: center;
   }
 `;
 
@@ -120,15 +119,14 @@ export const MainInfo = styled.div`
   flex-direction: column;
   gap: 2.5rem;
   animation: ${fadeIn} 0.8s ease-out;
-  flex: 1;
 
   @media (max-width: 768px) {
     gap: 2rem;
   }
 `;
 
-export const NameTitle = styled.h1`
-  font-size: clamp(2.5rem, 5vw, 4rem);
+export const ResumeTitle = styled.h1`
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
   font-weight: 600;
   line-height: 1.1;
   background: linear-gradient(
@@ -146,10 +144,12 @@ export const NameTitle = styled.h1`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: ${textShine} 5s linear infinite;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
 
-  @media (max-width: 480px) {
-    font-size: 2.5rem;
+  @media (max-width: 1024px) {
+    text-align: center;
+    margin-top: 1rem;
   }
 `;
 
@@ -262,6 +262,7 @@ export const Footer = styled.div`
   justify-content: flex-start;
   width: 100%;
   padding: 1rem 0;
+  margin-top: 1rem;
 
   @media (max-width: 1024px) {
     justify-content: center;
