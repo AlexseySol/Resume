@@ -1,4 +1,3 @@
-// Modal.styles.js
 import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`
@@ -34,7 +33,7 @@ export const ModalContent = styled.div`
   position: relative;
   background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 20px;
   width: 100%;
   max-width: 500px;
   padding: 2.5rem;
@@ -57,6 +56,9 @@ export const CloseButton = styled.button`
   padding: 0.5rem;
   border-radius: 50%;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #fff;
@@ -67,8 +69,9 @@ export const CloseButton = styled.button`
 
 export const ModalTitle = styled.h2`
   font-size: 2rem;
-  font-weight: 300;
+  font-weight: 600;
   margin-bottom: 2rem;
+  text-align: center;
   background: linear-gradient(120deg, #ffffff, rgba(255,255,255,0.8));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -90,10 +93,13 @@ export const Input = styled.input`
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 12px;
   color: #fff;
-  font-size: 1rem;
+  font-size: 16px;
   transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:focus {
     outline: none;
@@ -112,12 +118,16 @@ export const TextArea = styled.textarea`
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 12px;
   color: #fff;
-  font-size: 1rem;
+  font-size: 16px;
   min-height: 120px;
   resize: vertical;
   transition: all 0.3s ease;
+  font-family: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:focus {
     outline: none;
@@ -137,7 +147,7 @@ export const SubmitButton = styled.button`
   background: linear-gradient(135deg, rgba(255,255,255,0.95), #fff);
   color: #000;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 500;
   display: flex;
@@ -148,7 +158,12 @@ export const SubmitButton = styled.button`
   transition: all 0.3s ease;
   margin-top: 0.5rem;
 
-  &:hover {
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
@@ -157,12 +172,16 @@ export const SubmitButton = styled.button`
     transition: transform 0.3s ease;
   }
 
-  &:hover svg {
+  &:hover:not(:disabled) svg {
     transform: translateX(3px);
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
   }
 `;
 
@@ -170,5 +189,19 @@ export const Subtitle = styled.p`
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+`;
+
+export const ErrorMessage = styled.p`
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  text-align: center;
+`;
+
+export const SuccessMessage = styled.p`
+  color: #40c057;
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 2rem 0;
 `;

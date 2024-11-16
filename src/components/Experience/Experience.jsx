@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Briefcase } from 'lucide-react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import * as S from './Experience.styles';
 
 const Experience = () => {
   const { i18n } = useTranslation();
 
+  useEffect(() => {
+    AOS.refresh();
+  }, []);
+
   const companies = [
     {
-      name: i18n.language === 'ua' ? 
-        "ProAir & ProViz" : 
+      name: i18n.language === 'ua' ?
+        "ProAir & ProViz" :
         "ProAir & ProViz",
       type: "proair",
       description: i18n.language === 'ua' ?
@@ -62,7 +68,7 @@ const Experience = () => {
   return (
     <S.ExperienceSection>
       <S.ContentWrapper>
-        <S.TitleArea>
+        <S.TitleArea data-aos="fade-down" data-aos-duration="800">
           <S.IconWrapper>
             <Briefcase size={28} />
           </S.IconWrapper>
@@ -73,10 +79,12 @@ const Experience = () => {
 
         <S.CardsGrid>
           {companies.map((company, index) => (
-            <S.CompanyCard 
+            <S.CompanyCard
               key={index}
-              $delay={index * 0.1}
               $type={company.type}
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+              data-aos-duration="800"
             >
               <S.CompanyName>{company.name}</S.CompanyName>
               <S.Description>

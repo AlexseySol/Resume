@@ -1,94 +1,173 @@
-// About.jsx
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Code2, Bot, Cpu, MessagesSquare } from 'lucide-react';
+import { Brain, Heart, Target, AlertTriangle, Sparkles } from 'lucide-react';
 import {
   AboutSection,
   ContentContainer,
   HeaderArea,
   SectionTitle,
   MainText,
-  SkillsGrid,
-  SkillCard,
+  CardsGrid,
+  PersonalityCard,
+  CardHeader,
   CardIcon,
-  CardTitle,
-  CardDescription
+  CardContent,
+  Divider,
+  StrengthsList,
+  StrengthItem,
+  ChallengesList,
+  ChallengeItem,
+  Quote
 } from './About.styles';
 
 const About = () => {
   const { i18n } = useTranslation();
 
-  const skills = i18n.language === 'ua' 
-    ? [
-        {
-          icon: <Bot size={24} />,
-          title: 'Промпт-інжиніринг',
-          description: 'Експерт в створенні та оптимізації запитів для AI-моделей. Адаптація моделей під специфічні задачі клієнтів.'
+  const personalityData = i18n.language === 'ua' 
+    ? {
+        intro: "Привіт! Я розробник, що захоплюється технологіями та інноваціями. Моя історія - це постійний пошук балансу між технічною досконалістю та людяністю у всьому, що я роблю.",
+        mind: {
+          title: "Мислення",
+          strengths: [
+            "Технічна кмітливість та гнучкість мислення",
+            "Аналітичний підхід до вирішення задач",
+            "Здатність швидко опановувати нові технології",
+            "Системний погляд на проблеми"
+          ],
+          challenges: [
+            "Іноді надто заглиблююсь в деталі",
+            "Можу перезавантажити себе багатьма ідеями",
+            "Прагнення до досконалості може сповільнювати"
+          ]
         },
-        {
-          icon: <Code2 size={24} />,
-          title: 'Веб-розробка',
-          description: 'Професійні навички у фронтенд-розробці (HTML, CSS, JavaScript). Створення інтерактивних веб-застосунків.'
+        heart: {
+          title: "Характер",
+          strengths: [
+            "Щире захоплення своєю справою",
+            "Відкритість до нового",
+            "Бажання ділитися знаннями",
+            "Прагнення до постійного розвитку"
+          ],
+          challenges: [
+            "Можу бути надто самокритичним",
+            "Складно делегувати завдання",
+            "Іноді надто занурююсь в роботу"
+          ]
         },
-        {
-          icon: <Cpu size={24} />,
-          title: 'AI-рішення',
-          description: 'Розробка та інтеграція AI-асистентів у різні платформи. Робота з API ChatGPT, Anthropic, HuggingFace.'
-        },
-        {
-          icon: <MessagesSquare size={24} />,
-          title: 'Автоматизація',
-          description: 'Налаштування автоматизації процесів через Make.com, Zapier. Створення чат-ботів на основі GPT.'
+        principles: {
+          title: "Принципи",
+          quote: "Вірю, що технології мають робити життя людей кращим, а не складнішим. Саме тому я завжди шукаю баланс між інноваціями та простотою використання."
         }
-      ]
-    : [
-        {
-          icon: <Bot size={24} />,
-          title: 'Prompt Engineering',
-          description: 'Expert in creating and optimizing prompts for AI models. Adapting models to specific client tasks.'
+      }
+    : {
+        intro: "Hi! I'm a developer passionate about technology and innovation. My story is a constant search for balance between technical excellence and humanity in everything I do.",
+        mind: {
+          title: "Mindset",
+          strengths: [
+            "Technical ingenuity and flexible thinking",
+            "Analytical approach to problem-solving",
+            "Quick adoption of new technologies",
+            "Systematic view of problems"
+          ],
+          challenges: [
+            "Sometimes dive too deep into details",
+            "Can overload myself with many ideas",
+            "Perfectionism might slow things down"
+          ]
         },
-        {
-          icon: <Code2 size={24} />,
-          title: 'Web Development',
-          description: 'Professional skills in frontend development (HTML, CSS, JavaScript). Creating interactive web applications.'
+        heart: {
+          title: "Character",
+          strengths: [
+            "Genuine passion for what I do",
+            "Openness to new things",
+            "Desire to share knowledge",
+            "Commitment to continuous growth"
+          ],
+          challenges: [
+            "Can be too self-critical",
+            "Difficulty delegating tasks",
+            "Sometimes get too absorbed in work"
+          ]
         },
-        {
-          icon: <Cpu size={24} />,
-          title: 'AI Solutions',
-          description: 'Development and integration of AI assistants into various platforms. Working with ChatGPT, Anthropic, HuggingFace APIs.'
-        },
-        {
-          icon: <MessagesSquare size={24} />,
-          title: 'Automation',
-          description: 'Setting up process automation through Make.com, Zapier. Creating GPT-based chatbots.'
+        principles: {
+          title: "Principles",
+          quote: "I believe technology should make people's lives better, not more complicated. That's why I always seek balance between innovation and ease of use."
         }
-      ];
-
-  const description = i18n.language === 'ua'
-    ? "Захоплений і цілеспрямований фахівець у сфері штучного інтелекту з глибокою зацікавленістю інноваціями та передовими технологіями. Маю великий досвід у розробці AI-рішень, промпт-інжинірингу та автоматизації бізнес-процесів."
-    : "An enthusiastic and goal-oriented AI specialist with a deep passion for innovation and cutting-edge technologies. Extensive experience in developing AI solutions, prompt engineering, and business process automation.";
+      };
 
   return (
     <AboutSection>
       <ContentContainer>
         <HeaderArea>
           <SectionTitle>
-            {i18n.language === 'ua' ? 'Професійний профіль' : 'Professional Profile'}
+            {i18n.language === 'ua' ? 'Про мене' : 'About me'}
           </SectionTitle>
-          <MainText>{description}</MainText>
+          <MainText>{personalityData.intro}</MainText>
         </HeaderArea>
 
-        <SkillsGrid>
-          {skills.map((skill, index) => (
-            <SkillCard key={index} $delay={index * 0.1}>
-              <CardIcon>
-                {skill.icon}
-              </CardIcon>
-              <CardTitle>{skill.title}</CardTitle>
-              <CardDescription>{skill.description}</CardDescription>
-            </SkillCard>
-          ))}
-        </SkillsGrid>
+        <CardsGrid>
+          <PersonalityCard>
+            <CardHeader>
+              <CardIcon><Brain size={24} /></CardIcon>
+              {personalityData.mind.title}
+            </CardHeader>
+            <CardContent>
+              <StrengthsList>
+                {personalityData.mind.strengths.map((strength, index) => (
+                  <StrengthItem key={index}>
+                    <Sparkles size={16} />
+                    {strength}
+                  </StrengthItem>
+                ))}
+              </StrengthsList>
+              <Divider />
+              <ChallengesList>
+                {personalityData.mind.challenges.map((challenge, index) => (
+                  <ChallengeItem key={index}>
+                    <AlertTriangle size={16} />
+                    {challenge}
+                  </ChallengeItem>
+                ))}
+              </ChallengesList>
+            </CardContent>
+          </PersonalityCard>
+
+          <PersonalityCard>
+            <CardHeader>
+              <CardIcon><Heart size={24} /></CardIcon>
+              {personalityData.heart.title}
+            </CardHeader>
+            <CardContent>
+              <StrengthsList>
+                {personalityData.heart.strengths.map((strength, index) => (
+                  <StrengthItem key={index}>
+                    <Sparkles size={16} />
+                    {strength}
+                  </StrengthItem>
+                ))}
+              </StrengthsList>
+              <Divider />
+              <ChallengesList>
+                {personalityData.heart.challenges.map((challenge, index) => (
+                  <ChallengeItem key={index}>
+                    <AlertTriangle size={16} />
+                    {challenge}
+                  </ChallengeItem>
+                ))}
+              </ChallengesList>
+            </CardContent>
+          </PersonalityCard>
+
+          <PersonalityCard $wide>
+            <CardHeader>
+              <CardIcon><Target size={24} /></CardIcon>
+              {personalityData.principles.title}
+            </CardHeader>
+            <CardContent>
+              <Quote>{personalityData.principles.quote}</Quote>
+            </CardContent>
+          </PersonalityCard>
+        </CardsGrid>
       </ContentContainer>
     </AboutSection>
   );

@@ -14,13 +14,13 @@ const Skills = () => {
         "AI and Prompt Engineering",
       type: "ai",
       skills: i18n.language === 'ua' ? [
-        "GPT-4, Claude-2, MidJourney, DALL-E",
+        "GPT-4o, Claude-3.5-sonnet, MidJourney, DALL-E",
         "Розробка та оптимізація промптів",
         "Транскрибація аудіо та відео через AI",
         "Make.com, Zapier для AI-автоматизації",
         "Робота з API: OpenAI, Anthropic, HuggingFace"
       ] : [
-        "GPT-4, Claude-2, MidJourney, DALL-E",
+        "GPT-4o, Claude-3.5-sonnet, MidJourney, DALL-E",
         "Prompt development and optimization",
         "AI-powered audio and video transcription",
         "Make.com, Zapier for AI automation",

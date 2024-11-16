@@ -1,9 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
+import styled from 'styled-components';
 
 export const ExperienceSection = styled.section`
   width: 100%;
@@ -12,6 +7,8 @@ export const ExperienceSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
 
   @media (max-width: 1024px) {
     padding: 6rem 0;
@@ -38,6 +35,13 @@ export const TitleArea = styled.div`
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(-20px);
+
+  &[data-aos='fade-down'].aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   @media (max-width: 768px) {
     justify-content: center;
@@ -121,9 +125,14 @@ export const CompanyCard = styled.article`
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   backdrop-filter: blur(10px);
-  animation: ${fadeIn} 0.6s ease-out forwards;
-  animation-delay: ${props => props.$delay}s;
   opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+
+  &[data-aos='fade-up'].aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   &:hover {
     transform: translateY(-5px);
@@ -147,7 +156,6 @@ export const CompanyCard = styled.article`
     }};
     border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
   }
 `;
 
@@ -157,19 +165,6 @@ export const CompanyName = styled.h3`
   color: #fff;
   margin-bottom: 1rem;
   line-height: 1.3;
-`;
-
-export const Period = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 1.5rem;
-
-  svg {
-    color: rgba(255, 255, 255, 0.5);
-  }
 `;
 
 export const Description = styled.p`
