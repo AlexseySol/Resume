@@ -23,75 +23,59 @@ import {
 const About = () => {
   const { i18n } = useTranslation();
 
-  const personalityData = i18n.language === 'ua' 
+  const personalityData = i18n.language === 'ua'
     ? {
-        intro: "Привіт! Я розробник, що захоплюється технологіями та інноваціями. Моя історія - це постійний пошук балансу між технічною досконалістю та людяністю у всьому, що я роблю.",
+        intro: "Спеціалізуюся на автоматизації бізнес-процесів та впровадженні AI-рішень через NO-CODE платформу n8n. Створюю системи, які економлять час і підвищують ефективність роботи команд.",
         mind: {
-          title: "Мислення",
+          title: "Експертиза",
           strengths: [
-            "Технічна кмітливість та гнучкість мислення",
-            "Аналітичний підхід до вирішення задач",
-            "Здатність швидко опановувати нові технології",
-            "Системний погляд на проблеми"
+            "Розробка AI-агентів для автоматизації комунікацій",
+            "Інтеграція штучного інтелекту в бізнес-процеси",
+            "Автоматизація через n8n та NO-CODE рішення",
+            "Аналіз та оптимізація робочих процесів"
           ],
-          challenges: [
-            "Іноді надто заглиблююсь в деталі",
-            "Можу перезавантажити себе багатьма ідеями",
-            "Прагнення до досконалості може сповільнювати"
-          ]
+          challenges: []
         },
         heart: {
-          title: "Характер",
+          title: "Підхід до роботи",
           strengths: [
-            "Щире захоплення своєю справою",
-            "Відкритість до нового",
-            "Бажання ділитися знаннями",
-            "Прагнення до постійного розвитку"
+            "Фокус на практичних рішеннях, що дають результат",
+            "Швидка адаптація під потреби бізнесу",
+            "Комплексний підхід від аналізу до впровадження",
+            "Навчання команд роботі з новими інструментами"
           ],
-          challenges: [
-            "Можу бути надто самокритичним",
-            "Складно делегувати завдання",
-            "Іноді надто занурююсь в роботу"
-          ]
+          challenges: []
         },
         principles: {
-          title: "Принципи",
-          quote: "Вірю, що технології мають робити життя людей кращим, а не складнішим. Саме тому я завжди шукаю баланс між інноваціями та простотою використання."
+          title: "Філософія",
+          quote: "Автоматизація та AI мають спрощувати роботу, а не ускладнювати її. Мій підхід — створювати рішення, якими легко користуватись і які реально економлять час."
         }
       }
     : {
-        intro: "Hi! I'm a developer passionate about technology and innovation. My story is a constant search for balance between technical excellence and humanity in everything I do.",
+        intro: "I specialize in business process automation and AI implementation through the NO-CODE platform n8n. I create systems that save time and increase team efficiency.",
         mind: {
-          title: "Mindset",
+          title: "Expertise",
           strengths: [
-            "Technical ingenuity and flexible thinking",
-            "Analytical approach to problem-solving",
-            "Quick adoption of new technologies",
-            "Systematic view of problems"
+            "Development of AI agents for communication automation",
+            "Integration of artificial intelligence into business processes",
+            "Automation through n8n and NO-CODE solutions",
+            "Analysis and optimization of workflows"
           ],
-          challenges: [
-            "Sometimes dive too deep into details",
-            "Can overload myself with many ideas",
-            "Perfectionism might slow things down"
-          ]
+          challenges: []
         },
         heart: {
-          title: "Character",
+          title: "Work Approach",
           strengths: [
-            "Genuine passion for what I do",
-            "Openness to new things",
-            "Desire to share knowledge",
-            "Commitment to continuous growth"
+            "Focus on practical solutions that deliver results",
+            "Quick adaptation to business needs",
+            "Comprehensive approach from analysis to implementation",
+            "Training teams to work with new tools"
           ],
-          challenges: [
-            "Can be too self-critical",
-            "Difficulty delegating tasks",
-            "Sometimes get too absorbed in work"
-          ]
+          challenges: []
         },
         principles: {
-          title: "Principles",
-          quote: "I believe technology should make people's lives better, not more complicated. That's why I always seek balance between innovation and ease of use."
+          title: "Philosophy",
+          quote: "Automation and AI should simplify work, not complicate it. My approach is to create solutions that are easy to use and genuinely save time."
         }
       };
 
@@ -120,15 +104,6 @@ const About = () => {
                   </StrengthItem>
                 ))}
               </StrengthsList>
-              <Divider />
-              <ChallengesList>
-                {personalityData.mind.challenges.map((challenge, index) => (
-                  <ChallengeItem key={index}>
-                    <AlertTriangle size={16} />
-                    {challenge}
-                  </ChallengeItem>
-                ))}
-              </ChallengesList>
             </CardContent>
           </PersonalityCard>
 
@@ -146,15 +121,6 @@ const About = () => {
                   </StrengthItem>
                 ))}
               </StrengthsList>
-              <Divider />
-              <ChallengesList>
-                {personalityData.heart.challenges.map((challenge, index) => (
-                  <ChallengeItem key={index}>
-                    <AlertTriangle size={16} />
-                    {challenge}
-                  </ChallengeItem>
-                ))}
-              </ChallengesList>
             </CardContent>
           </PersonalityCard>
 

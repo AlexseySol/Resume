@@ -9,62 +9,82 @@ const Skills = () => {
   const skillCategories = [
     {
       icon: <Bot />,
-      title: i18n.language === 'ua' ? 
-        "AI та Промпт-інжиніринг" : 
+      title: i18n.language === 'ua' ?
+        "NO-CODE автоматизація (1+ рік досвіду)" :
+        "NO-CODE Automation (1+ year experience)",
+      type: "nocode",
+      skills: i18n.language === 'ua' ? [
+        "n8n - експертний рівень",
+        "Досвід роботи з Make.com, Zapier",
+        "Інтеграція API та Webhooks",
+        "Підключення CRM, фінансових додатків",
+        "Google Sheets, Facebook Looker Studio"
+      ] : [
+        "n8n - expert level",
+        "Experience with Make.com, Zapier",
+        "API and Webhooks integration",
+        "CRM, financial apps integration",
+        "Google Sheets, Facebook Looker Studio"
+      ]
+    },
+    {
+      icon: <Bot />,
+      title: i18n.language === 'ua' ?
+        "ШІ та Промпт-інжиніринг" :
         "AI and Prompt Engineering",
       type: "ai",
       skills: i18n.language === 'ua' ? [
-        "GPT-4o, Claude-3.5-sonnet, MidJourney, DALL-E",
-        "Розробка та оптимізація промптів",
-        "Транскрибація аудіо та відео через AI",
-        "Make.com, Zapier для AI-автоматизації",
-        "Робота з API: OpenAI, Anthropic, HuggingFace"
+        "GPT-4, GPT-4 Turbo, Claude Sonnet 4",
+        "Gemini 2.0 Flash, Grok (xAI)",
+        "Розробка ШІ-агентів для автоматизації",
+        "Транскрибація: Whisper, AssemblyAI",
+        "Векторні БД для пошуку (Supabase)"
       ] : [
-        "GPT-4o, Claude-3.5-sonnet, MidJourney, DALL-E",
-        "Prompt development and optimization",
-        "AI-powered audio and video transcription",
-        "Make.com, Zapier for AI automation",
-        "APIs: OpenAI, Anthropic, HuggingFace"
+        "GPT-4, GPT-4 Turbo, Claude Sonnet 4",
+        "Gemini 2.0 Flash, Grok (xAI)",
+        "AI agents development for automation",
+        "Transcription: Whisper, AssemblyAI",
+        "Vector DB for search (Supabase)"
       ]
     },
     {
       icon: <Code />,
-      title: i18n.language === 'ua' ? 
-        "Веб-розробка" : 
-        "Web Development",
+      title: i18n.language === 'ua' ?
+        "Веб-розробка та Backend" :
+        "Web Development and Backend",
       type: "web",
       skills: i18n.language === 'ua' ? [
         "React.js, JavaScript, HTML5, CSS3",
-        "Адаптивна верстка та веб-дизайн",
-        "GitHub: версіонування та командна робота",
-        "REST API інтеграції",
-        "Розробка та оптимізація веб-застосунків"
+        "Node.js - серверна частина",
+        "REST API розробка та інтеграції",
+        "PostgreSQL, MongoDB",
+        "GitHub, адаптивна верстка"
       ] : [
         "React.js, JavaScript, HTML5, CSS3",
-        "Responsive design and web design",
-        "GitHub: versioning and team collaboration",
-        "REST API integrations",
-        "Web application development and optimization"
+        "Node.js - backend development",
+        "REST API development and integrations",
+        "PostgreSQL, MongoDB",
+        "GitHub, responsive design"
       ]
     },
     {
       icon: <Cpu />,
-      title: i18n.language === 'ua' ? 
-        "Автоматизація процесів" : 
-        "Process Automation",
-      type: "automation",
+      title: i18n.language === 'ua' ?
+        "Бази даних та інтеграції" :
+        "Databases and Integrations",
+      type: "databases",
       skills: i18n.language === 'ua' ? [
-        "Аналіз та оптимізація бізнес-процесів",
-        "Розробка систем автоматизації",
-        "Інтеграція AI в робочі процеси",
-        "Автоматизація аналізу даних",
-        "Оптимізація роботи команд"
+        "PostgreSQL, MongoDB",
+        "Supabase (векторні БД)",
+        "Redis для кешування",
+        "Telegram Bot API, ManyChat",
+        "Social Media APIs (Instagram, Facebook, TikTok)"
       ] : [
-        "Business process analysis and optimization",
-        "Automation systems development",
-        "AI workflow integration",
-        "Data analysis automation",
-        "Team workflow optimization"
+        "PostgreSQL, MongoDB",
+        "Supabase (vector databases)",
+        "Redis for caching",
+        "Telegram Bot API, ManyChat",
+        "Social Media APIs (Instagram, Facebook, TikTok)"
       ]
     },
     {

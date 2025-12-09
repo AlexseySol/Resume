@@ -106,6 +106,10 @@ export const CompanyCard = styled.article`
   padding: 2.5rem;
   background: ${props => {
     switch(props.$type) {
+      case 'freelance':
+        return 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.08) 100%)';
+      case 'stickerwall':
+        return 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%)';
       case 'proair':
         return 'linear-gradient(135deg, rgba(130, 200, 255, 0.1) 0%, rgba(130, 200, 255, 0.05) 100%)';
       case 'vdfy':
@@ -138,6 +142,10 @@ export const CompanyCard = styled.article`
     transform: translateY(-5px);
     background: ${props => {
       switch(props.$type) {
+        case 'freelance':
+          return 'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(74, 222, 128, 0.12) 100%)';
+        case 'stickerwall':
+          return 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(167, 139, 250, 0.12) 100%)';
         case 'proair':
           return 'linear-gradient(135deg, rgba(130, 200, 255, 0.15) 0%, rgba(130, 200, 255, 0.08) 100%)';
         case 'vdfy':
@@ -163,8 +171,15 @@ export const CompanyName = styled.h3`
   font-size: 1.8rem;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   line-height: 1.3;
+`;
+
+export const Period = styled.div`
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1rem;
+  font-weight: 500;
 `;
 
 export const Description = styled.p`

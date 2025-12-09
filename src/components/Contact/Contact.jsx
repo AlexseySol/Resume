@@ -1,6 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Send, ExternalLink, MessageCircle } from 'lucide-react';
+import { PDFDownloadLink } from '@react-pdf/renderer'; // Импортируем компонент для скачивания PDF
+import PortfolioPDF from '../../pdf/PortfolioPDF';
+
 import * as S from './Contact.styles';
 
 const Contact = () => {
@@ -31,7 +34,8 @@ const Contact = () => {
         ],
         buttons: {
           telegram: 'Написати в Telegram',
-          email: 'Надіслати Email'
+          email: 'Надіслати Email',
+          download: 'Завантажити PDF'
         }
       }
     : {
@@ -58,9 +62,25 @@ const Contact = () => {
         ],
         buttons: {
           telegram: 'Write on Telegram',
-          email: 'Send Email'
+          email: 'Send Email',
+          download: 'Download PDF'
         }
       };
+
+  const pdfData = {
+    hero: {
+      title: i18n.language === 'ua' ? 'Резюме Олексія С.' : 'Resume of Oleksiy S.',
+      quote: i18n.language === 'ua'
+        ? 'Інновації - це особливий інструмент, який дозволяє перетворити зміни на можливості'
+        : 'Innovation is the specific tool that allows us to transform change into opportunity'
+    },
+    about: { text: 'I am a prompt engineer and web developer specializing in AI solutions.' },
+    skills: ['JavaScript', 'React', 'Node.js', 'AI Development'],
+    experience: ['Web Developer at XYZ', 'Prompt Engineer at ABC'],
+    education: ['Kyiv Polytechnic Institute', 'AI Certification'],
+    achievements: ['Created a successful AI chatbot', 'Automated company workflows'],
+    contact: { email: 'alexsey.solyanoy@gmail.com', telegram: 'https://t.me/Memory_al' }
+  };
 
   return (
     <S.ContactSection>
@@ -91,8 +111,16 @@ const Contact = () => {
           ))}
         </S.ContactGrid>
 
-       
-        
+        {/* Кнопка для скачивания PDF */}
+        <S.ButtonGroup>
+          <PDFDownloadLink
+            document={<PortfolioPDF {...pdfData} />}
+            fileName="portfolio.pdf"
+            style={{ textDecoration: 'none', color: 'white', background: '#333', padding: '10px 20px', borderRadius: '5px', marginTop: '20px' }}
+          >
+            {({ loading }) => (loading ? (i18n.language === 'ua' ? 'Генерація PDF...' : 'Generating PDF...') : contactData.buttons.download)}
+          </PDFDownloadLink>
+        </S.ButtonGroup>
       </S.ContentWrapper>
     </S.ContactSection>
   );

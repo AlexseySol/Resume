@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alexey Solyanoy — Resume</title>
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <style>
+      @media print {
+        @page {
+          margin: 0;
+          size: auto;
+        }
+        html {
+          background-color: #1a1a1a !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

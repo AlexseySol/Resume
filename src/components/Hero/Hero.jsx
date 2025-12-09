@@ -27,9 +27,9 @@ const Hero = () => {
   const { i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const specialties = i18n.language === 'ua' 
-    ? ['Промпт-інженер', 'Веб-розробник', 'Створювач AI', 'Спеціаліст з автоматизації']
-    : ['Prompt Engineer', 'Web Developer', 'AI Creator', 'Automation Specialist'];
+  const specialties = i18n.language === 'ua'
+    ? ['Спеціаліст з автоматизації', 'Впровадження штучного інтелекту', 'n8n спеціаліст', 'AI інтегратор']
+    : ['Automation Specialist', 'AI Implementation Expert', 'n8n Specialist', 'AI Integrator'];
 
   const quote = i18n.language === 'ua'
     ? 'Інновації - це особливий інструмент, який дозволяє перетворити зміни на можливості'
