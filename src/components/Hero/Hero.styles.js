@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const textShine = keyframes`
   0% { background-position: 0% 50%; }
@@ -13,13 +13,13 @@ const fadeIn = keyframes`
 export const HeroContainer = styled.div`
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 3rem;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 4rem;
   align-items: center;
   padding: 2rem 4rem;
-  max-width: 1400px;
+  max-width: 1800px;
   margin: 0 auto;
 
   @media (max-width: 1280px) {
@@ -32,6 +32,7 @@ export const HeroContainer = styled.div`
     grid-template-rows: auto auto;
     gap: 2rem;
     padding: 1rem;
+    height: auto;
     min-height: 100vh;
   }
 `;
@@ -51,35 +52,39 @@ export const Header = styled.div`
 
 export const ImageSection = styled.div`
   position: relative;
-  width: 400px;
-  height: 520px;
-  border-radius: 18px;
+  width: 500px;
+  height: 650px;
+  border-radius: 20px;
   overflow: hidden;
   justify-self: flex-start;
-
+  
   &::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.15));
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0,0,0,0.2)
+    );
     pointer-events: none;
   }
 
   @media (max-width: 1440px) {
-    width: 370px;
-    height: 480px;
+    width: 450px;
+    height: 630px;
   }
 
   @media (max-width: 1024px) {
-    width: 340px;
-    height: 440px;
+    width: 400px;
+    height: 560px;
     justify-self: center;
     margin-top: 4rem;
   }
 
   @media (max-width: 480px) {
-    width: 280px;
-    height: 364px;
+    width: 320px;
+    height: 448px;
     margin-top: 3.5rem;
   }
 `;
@@ -121,7 +126,7 @@ export const MainInfo = styled.div`
 `;
 
 export const ResumeTitle = styled.h1`
-  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
   font-weight: 600;
   line-height: 1.1;
   background: linear-gradient(
@@ -289,9 +294,9 @@ export const LocationBadge = styled.div`
 
 export const ButtonGroup = styled.div`
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   flex-wrap: wrap;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -301,58 +306,15 @@ export const ButtonGroup = styled.div`
   }
 `;
 
-const portfolioPulse = keyframes`
-  0%   { box-shadow: 0 0 0 0 rgba(96,165,250,0.4); }
-  70%  { box-shadow: 0 0 0 8px rgba(96,165,250,0); }
-  100% { box-shadow: 0 0 0 0 rgba(96,165,250,0); }
-`;
-
-const hotGlow = keyframes`
-  0%   { box-shadow: 0 0 12px 2px rgba(251,146,60,0.55); }
-  50%  { box-shadow: 0 0 22px 6px rgba(251,146,60,0.35); }
-  100% { box-shadow: 0 0 12px 2px rgba(251,146,60,0.55); }
-`;
-
-export const ButtonHot = styled.button`
-  padding: 0.95rem 2rem;
-  background: linear-gradient(135deg, #F97316, #EF4444);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  cursor: pointer;
-  letter-spacing: 0.01em;
-  animation: ${hotGlow} 2.5s ease-in-out infinite;
-  transition: transform 0.25s ease, filter 0.25s ease;
-  min-width: 180px;
-
-  &:hover {
-    transform: translateY(-3px) scale(1.03);
-    filter: brightness(1.12);
-  }
-
-  svg { transition: transform 0.25s ease; }
-  &:hover svg { transform: translateX(3px); }
-
-  @media (max-width: 768px) { width: 100%; }
-`;
-
 export const Button = styled.button`
-  padding: 0.75rem 1.5rem;
-  background: ${props =>
-    props.primary   ? 'linear-gradient(135deg, rgba(255,255,255,0.95), #fff)' :
-    props.portfolio ? 'rgba(96,165,250,0.12)' :
+  padding: 1rem 2rem;
+  background: ${props => props.primary ? 
+    'linear-gradient(135deg, rgba(255,255,255,0.95), #fff)' : 
     'rgba(255,255,255,0.05)'
   };
   color: ${props => props.primary ? '#000' : '#fff'};
-  border: 1px solid ${props =>
-    props.primary   ? 'transparent' :
-    props.portfolio ? 'rgba(96,165,250,0.5)' :
+  border: 1px solid ${props => props.primary ? 
+    'transparent' : 
     'rgba(255,255,255,0.2)'
   };
   border-radius: 12px;
@@ -365,18 +327,15 @@ export const Button = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 160px;
-  ${({ portfolio }) => portfolio && css`animation: ${portfolioPulse} 2s ease-in-out infinite;`}
 
   &:hover {
     transform: translateY(-2px);
-    background: ${props =>
-      props.primary   ? '#fff' :
-      props.portfolio ? 'rgba(96,165,250,0.2)' :
+    background: ${props => props.primary ? 
+      '#fff' : 
       'rgba(255,255,255,0.1)'
     };
-    border-color: ${props =>
-      props.primary   ? 'transparent' :
-      props.portfolio ? 'rgba(96,165,250,0.8)' :
+    border-color: ${props => props.primary ? 
+      'transparent' : 
       'rgba(255,255,255,0.5)'
     };
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);

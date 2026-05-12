@@ -54,7 +54,10 @@ const Projects = () => {
                 key={project.id}
                 $delay={index * 0.06}
                 $category={project.category}
-                onClick={() => track(EVENTS.PROJECT_CLICK, 'projects', { title: data.title })}
+                onClick={() => {
+                  sessionStorage.setItem('scroll_restore', String(window.scrollY));
+                  track(EVENTS.PROJECT_CLICK, 'projects', { title: data.title });
+                }}
                 style={{ textDecoration: 'none' }}
               >
                 <S.CardTop>

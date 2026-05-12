@@ -14,14 +14,25 @@ import ProjectPage from './components/Projects/ProjectPage';
 
 function MainPage() {
   useEffect(() => {
+    const savedY = sessionStorage.getItem('scroll_restore');
+
     AOS.init({
       duration: 1000,
       once: true,
       offset: 100,
       delay: 100,
       easing: 'ease-in-out',
-      disable: window.matchMedia('print').matches,
+      disable: !!savedY || window.matchMedia('print').matches,
     });
+
+    if (savedY) {
+      sessionStorage.removeItem('scroll_restore');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo(0, parseInt(savedY, 10));
+        });
+      });
+    }
 
     const handlePrint = () => {
       document.querySelectorAll('[data-aos]').forEach(el => {
