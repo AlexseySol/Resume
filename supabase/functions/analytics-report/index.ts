@@ -39,22 +39,27 @@ function topN(items: string[], n: number): Array<[string, number]> {
 
 const SECTION_LABELS: Record<string, string> = {
   hero:         '👋 Hero',
-  about:        '👤 About',
-  skills:       '🛠 Skills',
-  experience:   '💼 Experience',
-  projects:     '🚀 Projects',
-  education:    '🎓 Education',
-  contact:      '📬 Contact',
+  about:        '👤 Обо мне',
+  skills:       '🛠 Навыки',
+  experience:   '💼 Опыт',
+  projects:     '🚀 Проекты',
+  education:    '🎓 Образование',
+  contact:      '📬 Контакт',
 }
 
 const EVENT_LABELS: Record<string, string> = {
-  section_view:   '👁 Просмотр секции',
-  project_click:  '🚀 Клик по проекту',
-  contact_send:   '📬 Отправка контакта',
-  cv_download:    '⬇️ Скачивание CV',
-  link_click:     '🔗 Клик по ссылке',
-  tab_switch:     '📑 Переключение вкладки',
-  page_open:      '🌐 Открытие сайта',
+  page_open:    '🌐 Открытие сайта',
+  page_close:   '🚪 Закрытие сайта',
+  section_view: '👁 Просмотр секции',
+  project_click:'🚀 Клик по проекту',
+  contact_send: '📬 Отправка контакта',
+  cv_download:  '⬇️ Скачивание CV',
+  link_click:   '🔗 Клик по ссылке',
+  button_click: '🖱 Клик по кнопке',
+  tab_switch:   '📑 Смена вкладки',
+  tab_hidden:   '😴 Вкладка скрыта',
+  tab_visible:  '👁 Вкладка активна',
+  scroll_depth: '📜 Глубина скролла',
 }
 
 interface AnalyticsEvent {
@@ -67,21 +72,51 @@ interface AnalyticsEvent {
 
 function buildReport(events: AnalyticsEvent[], from: Date, to: Date): string {
   const uniqueSessions = new Set(events.map(e => e.session_id)).size
+  const pageOpens      = events.filter(e => e.event_type === 'page_open')
   const sectionViews   = events.filter(e => e.event_type === 'section_view')
-  const interactions   = events.filter(e => e.event_type !== 'section_view' && e.event_type !== 'page_open')
+  const interactions   = events.filter(e => !['section_view', 'page_open', 'tab_hidden', 'tab_visible', 'scroll_depth'].includes(e.event_type))
 
   const topSections = topN(sectionViews.map(e => e.section ?? 'unknown'), 5)
   const topEvents   = topN(interactions.map(e => e.event_type), 5)
 
-  const dateStr = to.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  // Scroll depth stats
+  const scrollEvents  = events.filter(e => e.event_type === 'scroll_depth')
+  const scroll100     = scrollEvents.filter(e => e.metadata?.depth === 100).length
+  const scroll50      = scrollEvents.filter(e => e.metadata?.depth === 50).length
+
+  // Avg time on page
+  const closedSessions = events.filter(e => e.event_type === 'page_close' && e.metadata?.time_on_page)
+  const avgTime = closedSessions.length
+    ? Math.round(closedSessions.reduce((s, e) => s + Number(e.metadata.time_on_page), 0) / closedSessions.length)
+    : null
+
+  // Country breakdown
+  const countries = pageOpens.map(e => e.metadata?.country as string).filter(Boolean)
+  const topCountries = topN(countries, 3)
+
+  const dateStr = to.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
   let msg = `📊 <b>Resume Analytics — ${dateStr}</b>\n\n`
-  msg    += `👥 <b>Відвідувачів:</b> ${uniqueSessions}\n`
-  msg    += `🌐 <b>Заходів на сайт:</b> ${events.filter(e => e.event_type === 'page_open').length}\n`
-  msg    += `⚡ <b>Всього подій:</b> ${events.length}\n`
+  msg    += `👥 <b>Посетителей:</b> ${uniqueSessions}\n`
+  msg    += `🌐 <b>Заходов на сайт:</b> ${pageOpens.length}\n`
+  msg    += `⚡ <b>Всего событий:</b> ${events.length}\n`
+  if (avgTime !== null) msg += `⏱ <b>Среднее время:</b> ${avgTime}с\n`
+
+  if (topCountries.length) {
+    msg += `\n🌍 <b>Страны:</b>\n`
+    topCountries.forEach(([country, count]) => {
+      msg += `  ${country} — <b>${count}</b>\n`
+    })
+  }
+
+  if (scroll100 || scroll50) {
+    msg += `\n📜 <b>Скролл:</b>\n`
+    msg += `  50% дочитали: <b>${scroll50}</b>\n`
+    msg += `  100% дочитали: <b>${scroll100}</b>\n`
+  }
 
   if (topSections.length) {
-    msg += `\n📌 <b>Топ секцій:</b>\n`
+    msg += `\n📌 <b>Топ секций:</b>\n`
     topSections.forEach(([section, count], i) => {
       const label = SECTION_LABELS[section] ?? section
       msg += `  ${i + 1}. ${label} — <b>${count}</b>\n`
@@ -89,7 +124,7 @@ function buildReport(events: AnalyticsEvent[], from: Date, to: Date): string {
   }
 
   if (topEvents.length) {
-    msg += `\n🖱 <b>Дії:</b>\n`
+    msg += `\n🖱 <b>Действия:</b>\n`
     topEvents.forEach(([type, count], i) => {
       const label = EVENT_LABELS[type] ?? type
       msg += `  ${i + 1}. ${label} — <b>${count}</b>\n`
@@ -99,17 +134,17 @@ function buildReport(events: AnalyticsEvent[], from: Date, to: Date): string {
   const cvDownloads = events.filter(e => e.event_type === 'cv_download').length
   const contacts    = events.filter(e => e.event_type === 'contact_send').length
   if (cvDownloads || contacts) {
-    msg += `\n🎯 <b>Конверсії:</b>\n`
-    if (contacts)    msg += `  📬 Контактів відправлено: <b>${contacts}</b>\n`
-    if (cvDownloads) msg += `  ⬇️ CV завантажено: <b>${cvDownloads}</b>\n`
+    msg += `\n🎯 <b>Конверсии:</b>\n`
+    if (contacts)    msg += `  📬 Контактов отправлено: <b>${contacts}</b>\n`
+    if (cvDownloads) msg += `  ⬇️ CV скачано: <b>${cvDownloads}</b>\n`
   }
 
-  if (events.length === 0) msg += `\n💤 Подій не зафіксовано.`
+  if (events.length === 0) msg += `\n💤 Событий не зафиксировано.`
 
   return msg
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS })
 
   try {

@@ -8,8 +8,8 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
 )
 
-const TG_TOKEN   = '8216552306:AAHK8bLEyOiLXYBkTxDnYFB-xa3uKgX-JYM'
-const TG_CHAT_ID = '-1003231729716'
+const TG_TOKEN   = Deno.env.get('TELEGRAM_BOT_TOKEN') ?? ''
+const TG_CHAT_ID = Deno.env.get('TELEGRAM_CHAT_ID')   ?? ''
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -19,6 +19,7 @@ const CORS = {
 
 const EMOJI: Record<string, string> = {
   page_open:    '👀',
+  page_close:   '🚪',
   section_view: '📌',
   project_click:'🚀',
   cv_download:  '⬇️',
@@ -28,7 +29,34 @@ const EMOJI: Record<string, string> = {
   tab_hidden:   '😴',
   tab_visible:  '👁',
   button_click: '🖱',
+  scroll_depth: '📜',
 }
+
+const EVENT_LABELS: Record<string, string> = {
+  page_open:    'Открыл сайт',
+  page_close:   'Закрыл сайт',
+  section_view: 'Посмотрел секцию',
+  project_click:'Кликнул на проект',
+  cv_download:  'Скачал CV',
+  link_click:   'Кликнул по ссылке',
+  contact_send: 'Отправил контакт',
+  tab_switch:   'Сменил язык',
+  tab_hidden:   'Свернул вкладку',
+  tab_visible:  'Вернулся на вкладку',
+  button_click: 'Нажал кнопку',
+  scroll_depth: 'Прокрутил страницу',
+}
+
+const SECTION_LABELS: Record<string, string> = {
+  hero:       'Hero',
+  about:      'Обо мне',
+  skills:     'Навыки',
+  experience: 'Опыт',
+  projects:   'Проекты',
+  education:  'Образование',
+  contact:    'Контакт',
+}
+
 
 function getIp(req: Request): string {
   return (
@@ -56,6 +84,28 @@ async function getGeo(ip: string): Promise<{ country: string; city: string; isp:
   }
 }
 
+function parseUA(ua: string): { browser: string; os: string; device: string } {
+  const browser =
+    ua.includes('Edg/')    ? 'Edge'    :
+    ua.includes('OPR/')    ? 'Opera'   :
+    ua.includes('Chrome/') ? 'Chrome'  :
+    ua.includes('Firefox/') ? 'Firefox' :
+    ua.includes('Safari/')  ? 'Safari'  :
+    'Unknown'
+
+  const os =
+    ua.includes('Windows NT') ? 'Windows' :
+    ua.includes('Mac OS X')   ? 'macOS'   :
+    ua.includes('Android')    ? 'Android' :
+    ua.includes('iPhone') || ua.includes('iPad') ? 'iOS' :
+    ua.includes('Linux')      ? 'Linux'   :
+    'Unknown'
+
+  const device = ua.includes('Mobile') || ua.includes('Android') || ua.includes('iPhone') ? '📱 Мобильный' : '🖥 Компьютер'
+
+  return { browser, os, device }
+}
+
 async function sendTelegram(text: string): Promise<void> {
   const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
     method:  'POST',
@@ -73,21 +123,24 @@ function buildMessage(
   ua: string,
   geo: { country: string; city: string; isp: string },
 ): string {
-  const type    = e.event_type as string
-  const emoji   = EMOJI[type] ?? '⚡'
-  const section = e.section ? ` → <b>${e.section}</b>` : ''
-  const meta    = (e.metadata ?? {}) as Record<string, unknown>
+  const type        = e.event_type as string
+  const emoji       = EMOJI[type] ?? '⚡'
+  const label       = EVENT_LABELS[type] ?? type
+  const sectionName = e.section ? SECTION_LABELS[e.section as string] ?? e.section as string : null
+  const section     = sectionName ? ` → <b>${sectionName}</b>` : ''
+  const meta        = (e.metadata ?? {}) as Record<string, unknown>
+  const { browser, os, device } = parseUA(ua)
 
-  let msg = `${emoji} <b>${type}</b>${section}\n`
+  let msg = `${emoji} <b>${label}</b>${section}\n`
 
   const location = [geo.country, geo.city].filter(Boolean).join(', ')
-  msg += `🌍 ${location}\n`
+  if (location) msg += `🌍 ${location}\n`
+  if (geo.isp)  msg += `📶 ${geo.isp}\n`
 
   if (type === 'page_open') {
-    msg += `📱 ${meta.screen ?? '?'}   🗣 ${meta.lang ?? '?'}\n`
-    msg += `📎 ${meta.referrer ?? 'direct'}\n`
-    const device = ua.includes('Mobile') ? '📱 Mobile' : '🖥 Desktop'
-    msg += `${device}\n`
+    msg += `${device} · ${browser} · ${os}\n`
+    msg += `📐 ${meta.screen ?? '?'}   🗣 ${meta.lang ?? '?'}\n`
+    msg += `📎 ${meta.referrer ?? 'прямой переход'}\n`
   }
 
   if (type === 'project_click' && meta.title) {
@@ -107,12 +160,16 @@ function buildMessage(
     if (meta.contactMethod) msg += `  📞 <i>${meta.contactMethod}</i>\n`
   }
 
+  if (type === 'cv_download') {
+    msg += `  ${device} · ${browser} · ${os}\n`
+  }
+
   msg += `🆔 <code>${(e.session_id as string).slice(0, 8)}</code>`
 
   return msg
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS })
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405, headers: CORS })
@@ -129,15 +186,20 @@ serve(async (req) => {
       session_id: e.session_id ?? 'unknown',
       event_type: e.event_type ?? 'unknown',
       section:    e.section    ?? null,
-      metadata:   { ...(e.metadata as object ?? {}), country: geo.country, city: geo.city, ip },
+      metadata:   { ...(e.metadata as object ?? {}), country: geo.country, city: geo.city, isp: geo.isp, ip },
       user_agent: ua,
       created_at: e.created_at ?? new Date().toISOString(),
     }))
 
-    await supabase.from('analytics_events').insert(rows)
+    const { error: dbError } = await supabase.from('analytics_events').insert(rows)
+    if (dbError) console.error('[db] insert error:', dbError.message)
 
-    for (const e of rows) {
-      await sendTelegram(buildMessage(e, ua, geo))
+    // Send only important events to Telegram — batch into one message if multiple
+    if (rows.length === 1) {
+      await sendTelegram(buildMessage(rows[0], ua, geo))
+    } else if (rows.length > 1) {
+      const combined = rows.map(e => buildMessage(e, ua, geo)).join('\n\n')
+      await sendTelegram(combined)
     }
 
     return new Response(
