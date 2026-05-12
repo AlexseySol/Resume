@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Send, Mail, MessageCircle, MapPin } from 'lucide-react';
+import { Send, Mail, MessageCircle, MapPin, Briefcase } from 'lucide-react';
 import Modal from '../Modal/Modal';
 import { useSectionTracking } from '../../hooks/useSectionTracking';
 import { track } from '../../analytics/tracker';
@@ -21,6 +21,7 @@ import {
   SpecialtyItem,
   ButtonGroup,
   Button,
+  ButtonHot,
   LangSwitch,
   LangButton,
   Footer
@@ -93,12 +94,30 @@ const Hero = () => {
             </QuoteWrapper>
 
             <ButtonGroup>
+              <ButtonHot
+                onClick={() => { track(EVENTS.BUTTON_CLICK, 'hero', { label: 'Hot CTA' }); setIsModalOpen(true); }}
+              >
+                <MessageCircle size={18} />
+                {i18n.language === 'ua' ? '🔥 Обговорити проект' : '🔥 Let\'s Talk'}
+              </ButtonHot>
+
               <Button
                 primary
                 onClick={() => { track(EVENTS.BUTTON_CLICK, 'hero', { label: 'Contact Me' }); setIsModalOpen(true); }}
               >
                 <MessageCircle size={18} />
                 {i18n.language === 'ua' ? 'Написати мені' : 'Contact Me'}
+              </Button>
+
+              <Button
+                portfolio
+                onClick={() => {
+                  track(EVENTS.BUTTON_CLICK, 'hero', { label: 'Portfolio' });
+                  document.getElementById('projects-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <Briefcase size={18} />
+                {i18n.language === 'ua' ? 'Портфоліо' : 'Portfolio'}
               </Button>
 
               <Button

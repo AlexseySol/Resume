@@ -194,11 +194,13 @@ serve(async (req: Request) => {
     const { error: dbError } = await supabase.from('analytics_events').insert(rows)
     if (dbError) console.error('[db] insert error:', dbError.message)
 
-    // Send only important events to Telegram — batch into one message if multiple
-    if (rows.length === 1) {
-      await sendTelegram(buildMessage(rows[0], ua, geo))
-    } else if (rows.length > 1) {
-      const combined = rows.map(e => buildMessage(e, ua, geo)).join('\n\n')
+    // Only important events go to Telegram; the rest are DB-only
+    const NOTIFY_EVENTS = new Set(['page_open', 'cv_download', 'contact_send', 'project_click', 'link_click', 'button_click'])
+    const toNotify = rows.filter(e => NOTIFY_EVENTS.has(e.event_type as string))
+    if (toNotify.length === 1) {
+      await sendTelegram(buildMessage(toNotify[0], ua, geo))
+    } else if (toNotify.length > 1) {
+      const combined = toNotify.map(e => buildMessage(e, ua, geo)).join('\n\n')
       await sendTelegram(combined)
     }
 

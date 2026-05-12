@@ -1,189 +1,128 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
+
+const EXP_ACCENT = {
+  freelance:   '#22D3EE',
+  stickerwall: '#A78BFA',
+  proair:      '#34D399',
+  vdfy:        '#FBBF24',
+  training:    '#60A5FA',
+  finacademy:  '#C084FC',
+  midjourney:  '#F472B6',
+  consulting:  '#FB923C',
+};
+
+const a = (type) => EXP_ACCENT[type] || '#64748B';
 
 export const ExperienceSection = styled.section`
   width: 100%;
-  padding: 8rem 0;
-  position: relative;
+  padding: 2.5rem 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  overflow: hidden;
 
-  @media (max-width: 1024px) {
-    padding: 6rem 0;
-  }
-
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
+  @media (max-width: 768px) { padding: 2rem 0; }
 `;
 
 export const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
+  max-width: 1100px;
   padding: 0 2rem;
   margin: 0 auto;
 
-  @media (max-width: 768px) {
-    padding: 0 1.5rem;
-  }
+  @media (max-width: 768px) { padding: 0 1.25rem; }
 `;
 
 export const TitleArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 4rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(-14px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 
   &[data-aos='fade-down'].aos-animate {
     opacity: 1;
     transform: translateY(0);
   }
 
-  @media (max-width: 768px) {
-    justify-content: center;
-    margin-bottom: 3rem;
-  }
+  @media (max-width: 768px) { justify-content: center; }
 `;
 
 export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  
-  svg {
-    color: rgba(255, 255, 255, 0.9);
-  }
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #1E293B;
+  border: 1px solid #334155;
+  flex-shrink: 0;
+
+  svg { color: #CBD5E1; }
 `;
 
 export const Title = styled.h2`
-  font-size: clamp(2.2rem, 5vw, 2.8rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
   font-weight: 700;
-  color: #fff;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -12px;
-    width: 70px;
-    height: 3px;
-    background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.1));
-  }
-
-  @media (max-width: 768px) {
-    &::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
+  color: #F1F5F9;
+  letter-spacing: -0.02em;
 `;
 
 export const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 2rem;
-  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
 `;
 
 export const CompanyCard = styled.article`
-  position: relative;
-  padding: 2.5rem;
-  background: ${props => {
-    switch(props.$type) {
-      case 'freelance':
-        return 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.08) 100%)';
-      case 'stickerwall':
-        return 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%)';
-      case 'proair':
-        return 'linear-gradient(135deg, rgba(130, 200, 255, 0.1) 0%, rgba(130, 200, 255, 0.05) 100%)';
-      case 'vdfy':
-        return 'linear-gradient(135deg, rgba(255, 200, 130, 0.1) 0%, rgba(255, 200, 130, 0.05) 100%)';
-      case 'training':
-        return 'linear-gradient(135deg, rgba(130, 255, 180, 0.1) 0%, rgba(130, 255, 180, 0.05) 100%)';
-      case 'finacademy':
-        return 'linear-gradient(135deg, rgba(200, 130, 255, 0.1) 0%, rgba(200, 130, 255, 0.05) 100%)';
-      case 'midjourney':
-        return 'linear-gradient(135deg, rgba(255, 130, 200, 0.1) 0%, rgba(255, 130, 200, 0.05) 100%)';
-      case 'consulting':
-        return 'linear-gradient(135deg, rgba(255, 220, 130, 0.1) 0%, rgba(255, 220, 130, 0.05) 100%)';
-      default:
-        return 'rgba(255, 255, 255, 0.05)';
-    }
-  }};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-left: 3px solid ${({ $type }) => a($type)};
+  border-radius: 0 10px 10px 0;
+  padding: 1rem 1.25rem;
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
+  transform: translateY(14px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 
   &[data-aos='fade-up'].aos-animate {
     opacity: 1;
     transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
   &:hover {
-    transform: translateY(-5px);
-    background: ${props => {
-      switch(props.$type) {
-        case 'freelance':
-          return 'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(74, 222, 128, 0.12) 100%)';
-        case 'stickerwall':
-          return 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(167, 139, 250, 0.12) 100%)';
-        case 'proair':
-          return 'linear-gradient(135deg, rgba(130, 200, 255, 0.15) 0%, rgba(130, 200, 255, 0.08) 100%)';
-        case 'vdfy':
-          return 'linear-gradient(135deg, rgba(255, 200, 130, 0.15) 0%, rgba(255, 200, 130, 0.08) 100%)';
-        case 'training':
-          return 'linear-gradient(135deg, rgba(130, 255, 180, 0.15) 0%, rgba(130, 255, 180, 0.08) 100%)';
-        case 'finacademy':
-          return 'linear-gradient(135deg, rgba(200, 130, 255, 0.15) 0%, rgba(200, 130, 255, 0.08) 100%)';
-        case 'midjourney':
-          return 'linear-gradient(135deg, rgba(255, 130, 200, 0.15) 0%, rgba(255, 130, 200, 0.08) 100%)';
-        case 'consulting':
-          return 'linear-gradient(135deg, rgba(255, 220, 130, 0.15) 0%, rgba(255, 220, 130, 0.08) 100%)';
-        default:
-          return 'rgba(255, 255, 255, 0.08)';
-      }
-    }};
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    border-color: #334155;
+    border-left-color: ${({ $type }) => a($type)};
   }
 `;
 
 export const CompanyName = styled.h3`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #E2E8F0;
+  margin-bottom: 0.25rem;
   line-height: 1.3;
 `;
 
 export const Period = styled.div`
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 1rem;
+  font-size: 0.7rem;
+  color: #64748B;
   font-weight: 500;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.02em;
 `;
 
 export const Description = styled.p`
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.1rem;
+  color: #94A3B8;
+  font-size: 0.8rem;
   line-height: 1.6;
 `;

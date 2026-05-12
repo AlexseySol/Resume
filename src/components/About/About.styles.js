@@ -1,137 +1,134 @@
 import styled, { keyframes } from 'styled-components';
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const glowPulse = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.1); }
-  70% { box-shadow: 0 0 8px 3px rgba(255,255,255,0.1); }
-  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.1); }
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 `;
 
 export const AboutSection = styled.section`
   width: 100%;
-  min-height: 100vh;
+  padding: 2.5rem 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 6rem 2rem;
 
-  @media (max-width: 1024px) {
-    padding: 4rem 1.5rem;
-    min-height: auto;
-  }
+  @media (max-width: 768px) { padding: 2rem 0; }
 `;
 
 export const ContentContainer = styled.div`
   width: 100%;
-  max-width: 1400px;
+  max-width: 1100px;
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 1.25rem;
+
+  @media (max-width: 768px) { padding: 0 1.25rem; }
 `;
 
 export const HeaderArea = styled.div`
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-  animation: ${fadeIn} 0.5s ease-out;
+  animation: ${fadeUp} 0.45s ease-out;
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: clamp(2rem, 3vw, 2.5rem);
-  color: #fff;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 700;
+  color: #F1F5F9;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
 `;
 
 export const MainText = styled.p`
-  font-size: clamp(1.1rem, 1.2vw, 1.2rem);
+  font-size: 0.9rem;
   line-height: 1.8;
-  color: rgba(255,255,255,0.8);
-  margin: 0 auto;
-  max-width: 800px;
+  color: #94A3B8;
+  max-width: 820px;
+  white-space: pre-line;
 `;
 
 export const CardsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  width: 100%;
+  gap: 0.75rem;
 
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
 `;
 
 export const PersonalityCard = styled.div`
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 16px;
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 10px;
   overflow: hidden;
-  animation: ${fadeIn} 0.5s ease-out forwards;
-  grid-column: ${props => props.$wide ? '1 / -1' : 'auto'};
-  
-  &:hover {
-    animation: ${glowPulse} 2s infinite;
-    border-color: rgba(255,255,255,0.1);
-  }
+  grid-column: ${({ $wide }) => $wide ? '1 / -1' : 'auto'};
+  animation: ${fadeUp} 0.45s ease-out both;
+  transition: border-color 0.2s ease;
+
+  &:hover { border-color: #334155; }
 `;
 
 export const CardHeader = styled.div`
-  padding: 1.5rem;
-  background: rgba(255,255,255,0.05);
+  padding: 0.75rem 1.125rem;
+  background: #161D2F;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #fff;
+  gap: 0.625rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #CBD5E1;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #1E293B;
 `;
 
 export const CardIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
+  width: 24px;
+  height: 24px;
+  background: #1E293B;
+  border-radius: 6px;
+  flex-shrink: 0;
 
   svg {
-    color: rgba(255,255,255,0.9);
+    color: #94A3B8;
+    width: 13px;
+    height: 13px;
   }
 `;
 
 export const CardContent = styled.div`
-  padding: 1.5rem;
+  padding: 0.875rem 1.125rem 1.125rem;
 `;
 
 export const Divider = styled.div`
   height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin: 1.5rem 0;
+  background: #1E293B;
+  margin: 0.75rem 0;
 `;
 
 export const StrengthsList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
 `;
 
 export const StrengthItem = styled.li`
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #94A3B8;
+  font-size: 0.82rem;
+  line-height: 1.5;
 
   svg {
-    color: #4CAF50;
+    color: #34D399;
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    margin-top: 0.18em;
   }
 `;
 
@@ -144,28 +141,25 @@ export const ChallengesList = styled.ul`
 export const ChallengeItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
+  gap: 0.5rem;
+  color: #94A3B8;
+  font-size: 0.82rem;
+  margin-bottom: 0.375rem;
 
   svg {
-    color: #FFB74D;
+    color: #FBBF24;
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
   }
 `;
 
 export const Quote = styled.blockquote`
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: rgba(255,255,255,0.8);
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: #94A3B8;
   font-style: italic;
   margin: 0;
-  padding: 1rem 0;
-  text-align: center;
-
-  &::before,
-  &::after {
-    content: '"';
-    color: rgba(255,255,255,0.4);
-  }
+  border-left: 2px solid #334155;
+  padding-left: 1rem;
 `;

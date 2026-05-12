@@ -16,76 +16,68 @@ const Experience = () => {
 
   const companies = [
     {
-      name: i18n.language === 'ua' ? "Фріланс" : "Freelance",
+      name: i18n.language === 'ua' ? "Фріланс — AI & Автоматизація" : "Freelance — AI & Automation",
       type: "freelance",
-      period: i18n.language === 'ua' ? "Грудень 2025 - по сьогодні" : "December 2025 - Present",
+      period: i18n.language === 'ua' ? "Грудень 2025 — по сьогодні" : "December 2025 — Present",
       description: i18n.language === 'ua' ?
-        "Надання послуг з автоматизації бізнес-процесів, розробка ШІ-агентів, інтеграція AI-рішень через n8n" :
-        "Providing business process automation services, AI agent development, AI solutions integration via n8n"
+        "Розробка AI-агентів та автоматизація бізнес-процесів через n8n. Проектування REST API інтеграцій, робота з Claude Code та OpenAI Codex для прискорення розробки. Консультування клієнтів щодо підбору AI-стеку." :
+        "Building AI agents and automating business processes via n8n. Designing REST API integrations, using Claude Code and OpenAI Codex to accelerate development. Consulting clients on AI stack selection."
     },
     {
       name: "StickerWall",
       type: "stickerwall",
-      period: i18n.language === 'ua' ? "Січень 2024 - Грудень 2024" : "January 2024 - December 2024",
+      period: i18n.language === 'ua' ? "Січень 2024 — Грудень 2024" : "January 2024 — December 2024",
       description: i18n.language === 'ua' ?
-        "ШІ впроваджуватель штучного інтелекту / ШІ інтегратор. Впровадження AI-рішень для автоматизації бізнес-процесів" :
-        "AI Implementation Expert / AI Integrator. Implementation of AI solutions for business process automation"
+        "AI-інтегратор. Впровадження AI-рішень у бізнес-процеси компанії. Проводив внутрішні воркшопи для команди по роботі з ChatGPT, Claude та інструментами автоматизації. Побудував n8n-пайплайни для обробки контенту." :
+        "AI Integrator. Implemented AI solutions into company business processes. Conducted internal workshops for the team on using ChatGPT, Claude and automation tools. Built n8n pipelines for content processing."
     },
     {
-      name: i18n.language === 'ua' ?
-        "ProAir & ProViz" :
-        "ProAir & ProViz",
+      name: "ProAir & ProViz",
       type: "proair",
-      period: i18n.language === 'ua' ? "Червень 2024 - Листопад 2024" : "June 2024 - November 2024",
+      period: i18n.language === 'ua' ? "Червень 2024 — Листопад 2024" : "June 2024 — November 2024",
       description: i18n.language === 'ua' ?
-        "Розробка сервісу аналізу аудіодзвінків, навчання персоналу та системи автоматизації для менеджерів" :
-        "Development of audio call analysis service, staff training and automation system for managers"
-    },
-    {
-      name: i18n.language === 'ua' ?
-        "Frontend Training Club" :
-        "Frontend Training Club",
-      type: "training",
-      period: i18n.language === 'ua' ? "Лютий 2024 - Травень 2024" : "February 2024 - May 2024",
-      description: i18n.language === 'ua' ?
-        "Джуніор фронтенд-розробник. Створення онлайн платформи для спортивних тренувань" :
-        "Junior frontend developer. Creating online sports training platform"
+        "Розробив сервіс аналізу аудіодзвінків на базі Whisper + GPT-4o. Навчав менеджерів роботі з AI-інструментами, провів серію воркшопів. Автоматизував звітність команди через n8n + Google Sheets." :
+        "Built an audio call analysis service based on Whisper + GPT-4o. Trained managers on AI tools, ran a series of workshops. Automated team reporting via n8n + Google Sheets."
     },
     {
       name: "VDFY",
       type: "vdfy",
-      period: i18n.language === 'ua' ? "Квітень 2024 - Серпень 2024" : "April 2024 - August 2024",
+      period: i18n.language === 'ua' ? "Квітень 2024 — Серпень 2024" : "April 2024 — August 2024",
       description: i18n.language === 'ua' ?
-        "Створення промптів для транскрибації відео та аудіо під специфіку компанії" :
-        "Creating prompts for video and audio transcription specific to company needs"
+        "Платформа відеооглядів громадської думки. Розробляв промпти для транскрибації та аналізу відео/аудіо. Інтегрував AssemblyAI + GPT-4o для автоматичного саммері контенту." :
+        "Public opinion video review platform. Developed prompts for video/audio transcription and analysis. Integrated AssemblyAI + GPT-4o for automatic content summarization."
     },
     {
-      name: i18n.language === 'ua' ?
-        "Фінансова Академія Актив" :
-        "Finance Academy Active",
+      name: i18n.language === 'ua' ? "Фінансова Академія Актив" : "Finance Academy Active",
       type: "finacademy",
-      period: i18n.language === 'ua' ? "Січень 2024 - Березень 2024" : "January 2024 - March 2024",
+      period: i18n.language === 'ua' ? "Січень 2024 — Березень 2024" : "January 2024 — March 2024",
       description: i18n.language === 'ua' ?
-        "Розробка промптів під навчальні програми ACCA та DipIFR" :
-        "Development of prompts for ACCA and DipIFR training programs"
+        "Розробляв AI-промпти для навчальних програм ACCA та DipIFR. Адаптував моделі GPT для генерації тестових завдань та пояснень фінансових концепцій." :
+        "Developed AI prompts for ACCA and DipIFR training programs. Adapted GPT models to generate test questions and financial concept explanations."
     },
     {
-      name: "MidJourney Image Creator",
-      type: "midjourney",
-      period: i18n.language === 'ua' ? "Вересень 2023 - Грудень 2023" : "September 2023 - December 2023",
-      description: i18n.language === 'ua' ?
-        "Генерація зображень для відеоігор, створення унікального графічного контенту" :
-        "Generating images for video games, creating unique graphic content"
-    },
-    {
-      name: i18n.language === 'ua' ?
-        "ШІ-консультації" :
-        "AI Consulting",
+      name: i18n.language === 'ua' ? "AI-консалтинг" : "AI Consulting",
       type: "consulting",
-      period: i18n.language === 'ua' ? "Січень 2023 - по сьогодні" : "January 2023 - Present",
+      period: i18n.language === 'ua' ? "Січень 2023 — по сьогодні" : "January 2023 — Present",
       description: i18n.language === 'ua' ?
-        "Консультація компаній OsviTech, JetCup, AltaKav щодо впровадження ШІ-рішень" :
-        "Consulting for OsviTech, JetCup, AltaKav on AI solutions implementation"
+        "Консультую компанії OsviTech, JetCup, AltaKav по впровадженню AI. Проводжу воркшопи для керівників та команд по використанню LLM, автоматизації та побудові AI-агентів." :
+        "Consulting OsviTech, JetCup, AltaKav on AI adoption. Running workshops for managers and teams on LLM usage, automation and AI agent development."
+    },
+    {
+      name: "Frontend Training Club",
+      type: "training",
+      period: i18n.language === 'ua' ? "Лютий 2024 — Травень 2024" : "February 2024 — May 2024",
+      description: i18n.language === 'ua' ?
+        "Frontend-розробник. Створення онлайн-платформи для спортивних тренувань на React.js." :
+        "Frontend developer. Built an online sports training platform using React.js."
+    },
+    {
+      name: "MidJourney — AI Graphics",
+      type: "midjourney",
+      period: i18n.language === 'ua' ? "Вересень 2023 — Грудень 2023" : "September 2023 — December 2023",
+      description: i18n.language === 'ua' ?
+        "Генерація унікальної графіки для відеоігор за допомогою MidJourney та Stable Diffusion." :
+        "Generated unique game graphics using MidJourney and Stable Diffusion."
     }
   ];
 

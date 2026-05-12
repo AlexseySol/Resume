@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Brain, Heart, Target, Sparkles } from 'lucide-react';
+import { Brain, Zap, Target, Sparkles } from 'lucide-react';
 import { useSectionTracking } from '../../hooks/useSectionTracking';
 import {
   AboutSection,
@@ -15,91 +15,94 @@ import {
   CardContent,
   StrengthsList,
   StrengthItem,
-  Quote
+  Quote,
 } from './About.styles';
 
 const About = () => {
   const ref = useSectionTracking('about');
   const { i18n } = useTranslation();
+  const ua = i18n.language === 'ua';
 
-  const personalityData = i18n.language === 'ua'
+  const data = ua
     ? {
-        intro: "Спеціалізуюся на автоматизації бізнес-процесів та впровадженні AI-рішень через NO-CODE платформу n8n. Створюю системи, які економлять час і підвищують ефективність роботи команд.",
+        intro:
+          '3+ роки в AI-автоматизації та системних інтеграціях. Проєктую мульти-агентні системи на n8n з Claude та GPT-5, будую RAG-архітектури на Supabase pgvector, інтегрую API телефонії, CRM, HMS, платіжних систем та LLM-провайдерів у єдині production-пайплайни.\n\nРозгортаю self-hosted n8n у production-режимі на VPS: Docker Compose, Traefik, PostgreSQL, Redis, queue mode з кількома воркерами. Від проєктування архітектури до фінального деплою та документації.',
         mind: {
-          title: "Експертиза",
+          title: 'Експертиза',
           strengths: [
-            "Розробка AI-агентів для автоматизації комунікацій",
-            "Інтеграція штучного інтелекту в бізнес-процеси",
-            "Автоматизація через n8n та NO-CODE рішення",
-            "Аналіз та оптимізація робочих процесів"
+            'AI-агенти: Claude Code, OpenAI Codex CLI, n8n AI Agent, multi-agent workflows',
+            'RAG та векторний пошук: Supabase pgvector, hybrid search, chunking-стратегії',
+            'n8n у production: self-hosted, queue mode, Docker Compose, GitHub-бекапи',
+            'REST API та інтеграції: OAuth 2.0, webhook-маршрутизація, Node.js',
+            'Голосові пайплайни: AssemblyAI, Whisper — транскрибація та AI-аналітика',
           ],
-          challenges: []
         },
         heart: {
-          title: "Підхід до роботи",
+          title: 'Підхід до роботи',
           strengths: [
-            "Фокус на практичних рішеннях, що дають результат",
-            "Швидка адаптація під потреби бізнесу",
-            "Комплексний підхід від аналізу до впровадження",
-            "Навчання команд роботі з новими інструментами"
+            'Аудит процесу → MVP → ітерації під реальне використання',
+            'Готові рішення, які команда запускає одразу без ручного супроводу',
+            'Воркшопи з впровадження AI — щоб після здачі все працювало автономно',
+            'Чесно кажу, де AI не потрібен і вистачить простого скрипта',
+            'Документую все: воркфлоу, схеми даних, інструкції для нетехнічних',
           ],
-          challenges: []
         },
         principles: {
-          title: "Філософія",
-          quote: "Автоматизація та AI мають спрощувати роботу, а не ускладнювати її. Мій підхід — створювати рішення, якими легко користуватись і які реально економлять час."
-        }
+          title: 'Філософія',
+          quote:
+            'AI — це інструмент економії часу команди, а не вітрина технологій. Моя метрика успіху — скільки годин на тиждень повертається людям після впровадження. Якщо рішення складне в підтримці або вимагає мене щотижня — це поганий продукт.',
+        },
       }
     : {
-        intro: "I specialize in business process automation and AI implementation through the NO-CODE platform n8n. I create systems that save time and increase team efficiency.",
+        intro:
+          '3+ years in AI automation and system integrations. I design multi-agent systems on n8n with Claude and GPT-5, build RAG architectures on Supabase pgvector, and integrate telephony APIs, CRM, HMS, payment systems and LLM providers into unified production pipelines.\n\nI deploy self-hosted n8n in production mode on VPS: Docker Compose, Traefik, PostgreSQL, Redis, queue mode with multiple workers. From architecture design to final deployment and documentation.',
         mind: {
-          title: "Expertise",
+          title: 'Expertise',
           strengths: [
-            "Development of AI agents for communication automation",
-            "Integration of artificial intelligence into business processes",
-            "Automation through n8n and NO-CODE solutions",
-            "Analysis and optimization of workflows"
+            'AI agents: Claude Code, OpenAI Codex CLI, n8n AI Agent, multi-agent workflows',
+            'RAG & vector search: Supabase pgvector, hybrid search, chunking strategies',
+            'n8n in production: self-hosted, queue mode, Docker Compose, GitHub backups',
+            'REST API & integrations: OAuth 2.0, webhook routing, Node.js',
+            'Voice pipelines: AssemblyAI, Whisper — transcription & AI call analytics',
           ],
-          challenges: []
         },
         heart: {
-          title: "Work Approach",
+          title: 'Work Approach',
           strengths: [
-            "Focus on practical solutions that deliver results",
-            "Quick adaptation to business needs",
-            "Comprehensive approach from analysis to implementation",
-            "Training teams to work with new tools"
+            'Process audit → MVP → iterations for real-world usage',
+            'Ready-to-run solutions that teams launch immediately',
+            'AI workshops — so everything runs autonomously after handoff',
+            'Honest about when AI isn\'t needed and a simple script will do',
+            'Document everything: workflows, data schemas, guides for non-technical users',
           ],
-          challenges: []
         },
         principles: {
-          title: "Philosophy",
-          quote: "Automation and AI should simplify work, not complicate it. My approach is to create solutions that are easy to use and genuinely save time."
-        }
+          title: 'Philosophy',
+          quote:
+            'AI is a tool for saving the team\'s time, not a technology showcase. My success metric: how many hours per week are returned to people after implementation. If a solution is hard to maintain or requires me every week — it\'s a bad product.',
+        },
       };
 
   return (
     <AboutSection ref={ref}>
       <ContentContainer>
         <HeaderArea>
-          <SectionTitle>
-            {i18n.language === 'ua' ? 'Про мене' : 'About me'}
-          </SectionTitle>
-          <MainText>{personalityData.intro}</MainText>
+          <SectionTitle>{ua ? 'Про мене' : 'About me'}</SectionTitle>
+          <MainText>{data.intro}</MainText>
         </HeaderArea>
 
         <CardsGrid>
           <PersonalityCard>
             <CardHeader>
-              <CardIcon><Brain size={24} /></CardIcon>
-              {personalityData.mind.title}
+              <CardIcon><Brain size={14} /></CardIcon>
+              {data.mind.title}
             </CardHeader>
             <CardContent>
               <StrengthsList>
-                {personalityData.mind.strengths.map((strength, index) => (
-                  <StrengthItem key={index}>
-                    <Sparkles size={16} />
-                    {strength}
+                {data.mind.strengths.map((s, i) => (
+                  <StrengthItem key={i}>
+                    <Sparkles size={14} />
+                    {s}
                   </StrengthItem>
                 ))}
               </StrengthsList>
@@ -108,15 +111,15 @@ const About = () => {
 
           <PersonalityCard>
             <CardHeader>
-              <CardIcon><Heart size={24} /></CardIcon>
-              {personalityData.heart.title}
+              <CardIcon><Zap size={14} /></CardIcon>
+              {data.heart.title}
             </CardHeader>
             <CardContent>
               <StrengthsList>
-                {personalityData.heart.strengths.map((strength, index) => (
-                  <StrengthItem key={index}>
-                    <Sparkles size={16} />
-                    {strength}
+                {data.heart.strengths.map((s, i) => (
+                  <StrengthItem key={i}>
+                    <Sparkles size={14} />
+                    {s}
                   </StrengthItem>
                 ))}
               </StrengthsList>
@@ -125,11 +128,11 @@ const About = () => {
 
           <PersonalityCard $wide>
             <CardHeader>
-              <CardIcon><Target size={24} /></CardIcon>
-              {personalityData.principles.title}
+              <CardIcon><Target size={14} /></CardIcon>
+              {data.principles.title}
             </CardHeader>
             <CardContent>
-              <Quote>{personalityData.principles.quote}</Quote>
+              <Quote>{data.principles.quote}</Quote>
             </CardContent>
           </PersonalityCard>
         </CardsGrid>

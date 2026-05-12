@@ -1,186 +1,88 @@
 import styled, { keyframes } from 'styled-components';
 
-const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-`;
-
-const bounceIn = keyframes`
-  0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.8;
-  }
-  70% { transform: scale(0.9); }
-  100% { transform: scale(1); opacity: 1; }
-`;
-
-const shimmer = keyframes`
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 `;
 
 export const EducationSection = styled.section`
   width: 100%;
-  padding: 8rem 0;
-  position: relative;
+  padding: 2.5rem 0;
   display: flex;
   justify-content: center;
-  align-items: center;
 
-  @media (max-width: 1024px) {
-    padding: 6rem 0;
-  }
-
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
+  @media (max-width: 768px) { padding: 2rem 0; }
 `;
 
 export const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
+  max-width: 1100px;
   padding: 0 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
+  margin: 0 auto;
 
-  @media (max-width: 768px) {
-    padding: 0 1.5rem;
-    gap: 3rem;
-  }
+  @media (max-width: 768px) { padding: 0 1.25rem; }
 `;
 
 export const TitleArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  animation: ${bounceIn} 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  margin-bottom: 2rem;
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
 
-  @media (max-width: 768px) {
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
+  @media (max-width: 768px) { justify-content: center; }
 `;
 
 export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  
-  svg {
-    color: rgba(255, 255, 255, 0.9);
-  }
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: #1E293B;
+  border: 1px solid #334155;
+  flex-shrink: 0;
+
+  svg { color: #CBD5E1; width: 17px; height: 17px; }
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: clamp(2.2rem, 4vw, 2.8rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
   font-weight: 700;
-  color: #fff;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -12px;
-    width: 70px;
-    height: 3px;
-    background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.1));
-  }
-
-  @media (max-width: 768px) {
-    &::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
+  color: #F1F5F9;
+  letter-spacing: -0.02em;
 `;
 
 export const CardsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0.75rem;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
 
 export const EducationCard = styled.div`
-  position: relative;
-  padding: 2rem;
-  background: ${props => {
-    switch(props.$type) {
-      case 'university':
-        return 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)';
-      case 'academy':
-        return 'linear-gradient(135deg, rgba(152, 224, 255, 0.1) 0%, rgba(152, 224, 255, 0.05) 100%)';
-      case 'courses':
-        return 'linear-gradient(135deg, rgba(255, 198, 218, 0.1) 0%, rgba(255, 198, 218, 0.05) 100%)';
-      default:
-        return 'rgba(255, 255, 255, 0.05)';
-    }
-  }};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  backdrop-filter: blur(10px);
-  animation: ${fadeInUp} 0.6s ease-out forwards;
-  animation-delay: ${props => props.$delay}s;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.05),
-      transparent
-    );
-    animation: ${shimmer} 8s infinite linear;
-  }
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-top: 2px solid ${({ $type }) =>
+    $type === 'university' ? '#60A5FA' :
+    $type === 'academy'    ? '#34D399' :
+    '#A78BFA'
+  };
+  border-radius: 10px;
+  padding: 1.125rem 1.25rem;
+  animation: ${fadeUp} 0.45s ease-out both;
+  animation-delay: ${({ $delay }) => $delay || 0}s;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    transform: translateY(-8px);
-    background: ${props => {
-      switch(props.$type) {
-        case 'university':
-          return 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%)';
-        case 'academy':
-          return 'linear-gradient(135deg, rgba(152, 224, 255, 0.15) 0%, rgba(152, 224, 255, 0.08) 100%)';
-        case 'courses':
-          return 'linear-gradient(135deg, rgba(255, 198, 218, 0.15) 0%, rgba(255, 198, 218, 0.08) 100%)';
-        default:
-          return 'rgba(255, 255, 255, 0.08)';
-      }
-    }};
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+    border-color: #334155;
+    border-top-color: ${({ $type }) =>
+      $type === 'university' ? '#60A5FA' :
+      $type === 'academy'    ? '#34D399' :
+      '#A78BFA'
+    };
   }
 `;
 
@@ -188,119 +90,106 @@ export const CardIconWrapper = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  margin-bottom: 1.5rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: #1E293B;
+  margin-bottom: 0.6rem;
 
-  svg {
-    color: rgba(255, 255, 255, 0.9);
-  }
+  svg { color: #94A3B8; width: 14px; height: 14px; }
 `;
 
 export const CardContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.3rem;
 `;
 
 export const CardTitle = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #E2E8F0;
+  line-height: 1.3;
 `;
 
 export const CardFullTitle = styled.div`
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 0.3rem;
-  font-weight: normal;
+  font-size: 0.78rem;
+  color: #64748B;
+  margin-top: 0.1rem;
 `;
 
 export const CardMeta = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.6);
+  gap: 1rem;
+  font-size: 0.72rem;
+  color: #64748B;
+  margin-top: 0.4rem;
 `;
 
 export const LocationWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.7);
+  gap: 0.3rem;
+  color: #64748B;
 `;
 
 export const Period = styled.span`
-  color: rgba(255, 255, 255, 0.5);
-  position: relative;
-  padding-left: 1.2rem;
-  
-  &:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
-    transform: translateY(-50%);
-  }
+  color: #475569;
 `;
 
 export const SpecialtyBadge = styled.div`
-  font-size: 1.1rem;
-  color: #fff;
-  padding: 0.8rem 1.2rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: #94A3B8;
+  padding: 0.35rem 0.7rem;
+  background: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  margin-top: 0.6rem;
+  display: inline-block;
 `;
 
 export const ProgramInfo = styled.div`
-  margin-top: 0.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #1E293B;
 `;
 
 export const ProgramTitle = styled.h4`
-  font-size: 1.2rem;
-  color: #fff;
-  margin-bottom: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #CBD5E1;
+  margin-bottom: 0.3rem;
 `;
 
 export const ProgramDetails = styled.p`
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  color: #64748B;
   line-height: 1.6;
 `;
 
 export const CoursesList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 0.5rem;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
 `;
 
 export const CourseItem = styled.li`
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.78rem;
+  color: #94A3B8;
   line-height: 1.5;
-  padding-left: 1.2rem;
+  padding-left: 0.875rem;
   position: relative;
 
-  &:before {
+  &::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 0.7rem;
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.4);
+    top: 0.55em;
+    width: 3px;
+    height: 3px;
+    background: #475569;
     border-radius: 50%;
   }
 `;
