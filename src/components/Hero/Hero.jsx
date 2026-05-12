@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Send, Mail, MessageCircle, MapPin } from 'lucide-react';
 import Modal from '../Modal/Modal';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
+import { track } from '../../analytics/tracker';
+import { EVENTS } from '../../analytics/events';
 import {
   HeroContainer,
   ContentWrapper,
@@ -26,6 +29,12 @@ import {
 const Hero = () => {
   const { i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const ref = useSectionTracking('hero');
+
+  useEffect(() => {
+    const handleLang = (lang) => track(EVENTS.TAB_SWITCH, 'hero', { lang });
+    return () => {};
+  }, []);
 
   const specialties = i18n.language === 'ua'
     ? ['Спеціаліст з автоматизації', 'Впровадження штучного інтелекту', 'n8n спеціаліст', 'AI інтегратор']
@@ -41,18 +50,18 @@ const Hero = () => {
 
   return (
     <>
-      <HeroContainer>
+      <HeroContainer ref={ref}>
         <Header>
           <LangSwitch>
             <LangButton
               active={i18n.language === 'en'}
-              onClick={() => i18n.changeLanguage('en')}
+              onClick={() => { i18n.changeLanguage('en'); track(EVENTS.TAB_SWITCH, 'hero', { lang: 'en' }); }}
             >
               EN
             </LangButton>
             <LangButton
               active={i18n.language === 'ua'}
-              onClick={() => i18n.changeLanguage('ua')}
+              onClick={() => { i18n.changeLanguage('ua'); track(EVENTS.TAB_SWITCH, 'hero', { lang: 'ua' }); }}
             >
               UA
             </LangButton>

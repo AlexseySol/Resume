@@ -2,8 +2,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Code, Bot, Cpu, Users, BookOpen } from 'lucide-react';
 import * as S from './Skills.styles';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
 
 const Skills = () => {
+  const ref = useSectionTracking('skills');
   const { i18n } = useTranslation();
 
   const skillCategories = [
@@ -110,7 +112,7 @@ const Skills = () => {
   ];
 
   return (
-    <S.SkillsSection>
+    <S.SkillsSection ref={ref}>
       <S.ContentWrapper>
         <S.TitleArea>
           <S.IconWrapper>

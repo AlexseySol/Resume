@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AOS from 'aos';
+import { initAnalytics } from './analytics/tracker';
 import 'aos/dist/aos.css';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
@@ -11,6 +12,10 @@ import Projects from './components/Projects/Projects';
 import Contact from './components/Contact/Contact';
 
 function App() {
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
   useEffect(() => {
     // Инициализация AOS
     AOS.init({

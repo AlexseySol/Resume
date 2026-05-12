@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Brain, Heart, Target, AlertTriangle, Sparkles } from 'lucide-react';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
 import {
   AboutSection,
   ContentContainer,
@@ -21,6 +22,7 @@ import {
 } from './About.styles';
 
 const About = () => {
+  const ref = useSectionTracking('about');
   const { i18n } = useTranslation();
 
   const personalityData = i18n.language === 'ua'
@@ -80,7 +82,7 @@ const About = () => {
       };
 
   return (
-    <AboutSection>
+    <AboutSection ref={ref}>
       <ContentContainer>
         <HeaderArea>
           <SectionTitle>

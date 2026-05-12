@@ -2,8 +2,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { GraduationCap, Building, Code, Bookmark } from 'lucide-react';
 import * as S from './Education.styles';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
 
 const Education = () => {
+  const ref = useSectionTracking('education');
   const { t, i18n } = useTranslation();
 
   const educationData = [
@@ -51,7 +53,7 @@ const Education = () => {
   ];
 
   return (
-    <S.EducationSection>
+    <S.EducationSection ref={ref}>
       <S.ContentWrapper>
         <S.TitleArea>
           <S.IconWrapper>

@@ -3,10 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { Folder, Bot, TrendingUp, MessageCircle, FileText, Calendar, Sparkles, Phone } from 'lucide-react';
 import ProjectModal from './ProjectModal';
 import * as S from './Projects.styles';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
+import { track } from '../../analytics/tracker';
+import { EVENTS } from '../../analytics/events';
 
 const Projects = () => {
   const { i18n } = useTranslation();
   const [selectedProject, setSelectedProject] = useState(null);
+  const ref = useSectionTracking('projects');
+
+  const handleProjectClick = (project) => {
+    track(EVENTS.PROJECT_CLICK, 'projects', { title: project.title });
+    setSelectedProject(project);
+  };
 
   const projects = i18n.language === 'ua'
     ? [
@@ -964,7 +973,7 @@ Complete content marketing automation. 20+ hours saved per week. Constant social
 
   return (
     <>
-      <S.ProjectsSection>
+      <S.ProjectsSection ref={ref}>
         <S.ContentWrapper>
           <S.TitleArea data-aos="fade-down" data-aos-duration="800">
             <S.IconWrapper>
@@ -988,7 +997,7 @@ Complete content marketing automation. 20+ hours saved per week. Constant social
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
                 data-aos-duration="800"
-                onClick={() => setSelectedProject(project)}
+                onClick={() => handleProjectClick(project)}
                 $category={project.category}
               >
                 <S.ProjectIcon>{project.icon}</S.ProjectIcon>

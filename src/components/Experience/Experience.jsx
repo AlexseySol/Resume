@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Briefcase } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
 import * as S from './Experience.styles';
 
 const Experience = () => {
+  const ref = useSectionTracking('experience');
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -88,7 +90,7 @@ const Experience = () => {
   ];
 
   return (
-    <S.ExperienceSection>
+    <S.ExperienceSection ref={ref}>
       <S.ContentWrapper>
         <S.TitleArea data-aos="fade-down" data-aos-duration="800">
           <S.IconWrapper>

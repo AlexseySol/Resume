@@ -1,13 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Send, ExternalLink, MessageCircle } from 'lucide-react';
-import { PDFDownloadLink } from '@react-pdf/renderer'; // Импортируем компонент для скачивания PDF
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import PortfolioPDF from '../../pdf/PortfolioPDF';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
+import { track } from '../../analytics/tracker';
+import { EVENTS } from '../../analytics/events';
 
 import * as S from './Contact.styles';
 
 const Contact = () => {
   const { i18n } = useTranslation();
+  const ref = useSectionTracking('contact');
 
   const contactData = i18n.language === 'ua'
     ? {
@@ -83,7 +87,7 @@ const Contact = () => {
   };
 
   return (
-    <S.ContactSection>
+    <S.ContactSection ref={ref}>
       <S.ContentWrapper>
         <S.TitleArea>
           <S.CardIcon>
@@ -98,11 +102,12 @@ const Contact = () => {
               <S.CardIcon>{contact.icon}</S.CardIcon>
               <S.CardContent>
                 <S.CardTitle>{contact.title}</S.CardTitle>
-                <S.CardText 
-                  as="a" 
-                  href={contact.link} 
-                  target="_blank" 
+                <S.CardText
+                  as="a"
+                  href={contact.link}
+                  target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => track(EVENTS.LINK_CLICK, 'contact', { label: contact.title })}
                 >
                   {contact.text}
                 </S.CardText>
@@ -117,6 +122,7 @@ const Contact = () => {
             document={<PortfolioPDF {...pdfData} />}
             fileName="portfolio.pdf"
             style={{ textDecoration: 'none', color: 'white', background: '#333', padding: '10px 20px', borderRadius: '5px', marginTop: '20px' }}
+            onClick={() => track(EVENTS.CV_DOWNLOAD, 'contact')}
           >
             {({ loading }) => (loading ? (i18n.language === 'ua' ? 'Генерація PDF...' : 'Generating PDF...') : contactData.buttons.download)}
           </PDFDownloadLink>
