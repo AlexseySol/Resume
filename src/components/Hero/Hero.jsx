@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Send, Mail, MessageCircle, MapPin } from 'lucide-react';
 import Modal from '../Modal/Modal';
@@ -31,10 +31,6 @@ const Hero = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const ref = useSectionTracking('hero');
 
-  useEffect(() => {
-    const handleLang = (lang) => track(EVENTS.TAB_SWITCH, 'hero', { lang });
-    return () => {};
-  }, []);
 
   const specialties = i18n.language === 'ua'
     ? ['Спеціаліст з автоматизації', 'Впровадження штучного інтелекту', 'n8n спеціаліст', 'AI інтегратор']

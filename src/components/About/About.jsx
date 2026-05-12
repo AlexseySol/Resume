@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Brain, Heart, Target, AlertTriangle, Sparkles } from 'lucide-react';
+import { Brain, Heart, Target, Sparkles } from 'lucide-react';
 import { useSectionTracking } from '../../hooks/useSectionTracking';
 import {
   AboutSection,
@@ -13,11 +13,8 @@ import {
   CardHeader,
   CardIcon,
   CardContent,
-  Divider,
   StrengthsList,
   StrengthItem,
-  ChallengesList,
-  ChallengeItem,
   Quote
 } from './About.styles';
 

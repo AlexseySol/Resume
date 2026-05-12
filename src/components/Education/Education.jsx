@@ -6,7 +6,7 @@ import { useSectionTracking } from '../../hooks/useSectionTracking';
 
 const Education = () => {
   const ref = useSectionTracking('education');
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const educationData = [
     {
