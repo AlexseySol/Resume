@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, ScrollRestoration, Outlet } from 'react-router-dom';
 import AOS from 'aos';
 import { initAnalytics } from './analytics/tracker';
 import 'aos/dist/aos.css';
@@ -14,25 +14,13 @@ import ProjectPage from './components/Projects/ProjectPage';
 
 function MainPage() {
   useEffect(() => {
-    const savedY = sessionStorage.getItem('scroll_restore');
-
     AOS.init({
-      duration: 1000,
+      duration: 800,
       once: true,
-      offset: 100,
-      delay: 100,
-      easing: 'ease-in-out',
-      disable: !!savedY || window.matchMedia('print').matches,
+      offset: 80,
+      easing: 'ease-out',
+      disable: window.matchMedia('print').matches,
     });
-
-    if (savedY) {
-      sessionStorage.removeItem('scroll_restore');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          window.scrollTo(0, parseInt(savedY, 10));
-        });
-      });
-    }
 
     const handlePrint = () => {
       document.querySelectorAll('[data-aos]').forEach(el => {
@@ -46,30 +34,42 @@ function MainPage() {
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-      <div data-aos="fade-down"><Hero /></div>
-      <div data-aos="fade-up"><About /></div>
-      <div data-aos="fade-up"><Skills /></div>
-      <div data-aos="fade-up"><Experience /></div>
-      <div data-aos="fade-up"><Projects /></div>
-      <div data-aos="fade-up"><Education /></div>
-      <div data-aos="fade-up"><Contact /></div>
+      <Hero />
+      <About />
+      <Skills />
+      <Experience />
+      <Projects />
+      <Education />
+      <Contact />
     </div>
   );
 }
+
+function Root() {
+  return (
+    <>
+      <ScrollRestoration />
+      <Outlet />
+    </>
+  );
+}
+
+const router = createBrowserRouter([
+  {
+    element: <Root />,
+    children: [
+      { path: '/', element: <MainPage /> },
+      { path: '/project/:id', element: <ProjectPage /> },
+    ],
+  },
+]);
 
 function App() {
   useEffect(() => {
     initAnalytics();
   }, []);
 
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/project/:id" element={<ProjectPage />} />
-      </Routes>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

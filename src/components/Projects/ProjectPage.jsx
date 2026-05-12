@@ -18,35 +18,56 @@ const CAT_LABEL = {
   fullstack:  { ua: 'Full-stack', en: 'Full-stack' },
 };
 
+// Detect "Term — Description" pattern (em dash or double dash)
+function isDefinitionLine(text) {
+  return /^[^—–\n]{2,60}[—–].{4,}/.test(text);
+}
+
+function splitDefinition(text) {
+  const match = text.match(/^(.+?)\s*[—–]\s*(.+)$/);
+  return match ? [match[1].trim(), match[2].trim()] : null;
+}
+
 function parseDescription(text) {
   const sections = [];
   const lines = text.split('\n');
-  let currentSection = { type: 'text', content: [] };
+  let currentSection = { type: 'text', title: null, content: [] };
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
+  const flush = () => {
+    if (currentSection.content.length > 0 || currentSection.title) {
+      sections.push({ ...currentSection });
+    }
+    currentSection = { type: 'text', title: null, content: [] };
+  };
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
 
     if (!line) {
-      if (currentSection.content.length > 0) {
-        sections.push({ ...currentSection });
-        currentSection = { type: 'text', content: [] };
-      }
+      if (currentSection.content.length > 0) flush();
       continue;
     }
 
-    if (line.startsWith('**') && line.endsWith('**') && line.endsWith(':**')) {
-      if (currentSection.content.length > 0) sections.push({ ...currentSection });
-      currentSection = {
-        type: 'section',
-        title: line.replace(/\*\*/g, '').replace(':', ''),
-        content: [],
-      };
-    } else if (line.startsWith('**') && line.endsWith('**')) {
-      currentSection.content.push({ type: 'subtitle', text: line.replace(/\*\*/g, '') });
-    } else if (line.startsWith('✅') || line.startsWith('❌')) {
+    if (line.startsWith('**') && line.endsWith('**')) {
+      flush();
+      const cleaned = line.replace(/\*\*/g, '').replace(/:$/, '');
+      currentSection = { type: 'section', title: cleaned, content: [] };
+      continue;
+    }
+
+    if (line.startsWith('✅') || line.startsWith('❌')) {
       currentSection.content.push({ type: 'checkitem', icon: line[0], text: line.substring(2).trim() });
     } else if (line.startsWith('•') || line.startsWith('-')) {
-      currentSection.content.push({ type: 'bullet', text: line.substring(1).trim() });
+      const body = line.substring(1).trim();
+      if (isDefinitionLine(body)) {
+        const parts = splitDefinition(body);
+        currentSection.content.push(parts
+          ? { type: 'definition', term: parts[0], desc: parts[1] }
+          : { type: 'bullet', text: body }
+        );
+      } else {
+        currentSection.content.push({ type: 'bullet', text: body });
+      }
     } else if (line.includes('🔗') || line.includes('🎥') || line.includes('📱')) {
       currentSection.content.push({ type: 'highlight', text: line });
     } else {
@@ -54,14 +75,19 @@ function parseDescription(text) {
     }
   }
 
-  if (currentSection.content.length > 0) sections.push(currentSection);
+  flush();
   return sections;
 }
 
-function renderItem(item, index) {
+function renderItem(item, index, accent) {
   switch (item.type) {
-    case 'subtitle':
-      return <S.Subtitle key={index}>{item.text}</S.Subtitle>;
+    case 'definition':
+      return (
+        <S.DefinitionRow key={index}>
+          <S.DefinitionTerm $accent={accent}>{item.term}</S.DefinitionTerm>
+          <S.DefinitionDesc>{item.desc}</S.DefinitionDesc>
+        </S.DefinitionRow>
+      );
     case 'checkitem':
       return (
         <S.CheckItem key={index} $positive={item.icon === '✅'}>
@@ -72,12 +98,13 @@ function renderItem(item, index) {
     case 'bullet':
       return (
         <S.BulletItem key={index}>
-          <S.Bullet />
+          <S.Bullet $accent={accent} />
           <span>{item.text}</span>
         </S.BulletItem>
       );
     case 'highlight':
       return <S.HighlightText key={index}>{item.text}</S.HighlightText>;
+    case 'text':
     default:
       return <S.Paragraph key={index}>{item.text}</S.Paragraph>;
   }
@@ -95,9 +122,9 @@ const ProjectPage = () => {
   const project = allProjects.find(p => p.id === id);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (project) {
       track(EVENTS.PROJECT_CLICK, 'projects', { title: project[lang]?.title || project.id, page: true });
-      window.scrollTo(0, 0);
     }
   }, [id]);
 
@@ -110,29 +137,30 @@ const ProjectPage = () => {
     return (
       <S.PageWrapper>
         <S.TopBar>
-          <S.BackButton onClick={() => navigate('/')}>
+          <S.BackButton onClick={() => navigate(-1)}>
             <ArrowLeft size={15} />
             {lang === 'ua' ? 'Назад' : 'Back'}
           </S.BackButton>
         </S.TopBar>
-        <S.Hero>
-          <S.ProjectTitle>
-            {lang === 'ua' ? 'Проект не знайдено' : 'Project not found'}
-          </S.ProjectTitle>
-        </S.Hero>
+        <S.HeroSection>
+          <S.HeroInner>
+            <S.ProjectTitle>{lang === 'ua' ? 'Проект не знайдено' : 'Project not found'}</S.ProjectTitle>
+          </S.HeroInner>
+        </S.HeroSection>
       </S.PageWrapper>
     );
   }
 
   const data = project[lang] || project.en;
-  const accentColor = CAT_COLOR[project.category] || '#64748B';
+  const accent = CAT_COLOR[project.category] || '#64748B';
   const catLabel = (CAT_LABEL[project.category] || {})[lang] || project.category;
   const sections = parseDescription(data.fullDesc);
+  const hasImages = project.images && project.images.length > 0;
 
   return (
     <S.PageWrapper>
       <S.TopBar>
-        <S.BackButton onClick={() => navigate('/')}>
+        <S.BackButton onClick={() => navigate(-1)}>
           <ArrowLeft size={15} />
           {lang === 'ua' ? 'Назад до портфоліо' : 'Back to portfolio'}
         </S.BackButton>
@@ -142,42 +170,55 @@ const ProjectPage = () => {
         </S.LangSwitch>
       </S.TopBar>
 
-      <S.Hero>
-        <S.CategoryBadge $color={accentColor}>{catLabel}</S.CategoryBadge>
-        <S.ProjectTitle>{data.title}</S.ProjectTitle>
-        <S.ShortDesc>{data.shortDesc}</S.ShortDesc>
-      </S.Hero>
+      <S.HeroSection>
+        <S.HeroGradient $color={accent} />
+        <S.HeroInner>
+          <S.CategoryBadge $color={accent}>{catLabel}</S.CategoryBadge>
+          <S.ProjectTitle>{data.title}</S.ProjectTitle>
+          <S.ShortDesc>{data.shortDesc}</S.ShortDesc>
+        </S.HeroInner>
+      </S.HeroSection>
 
-      <S.TechSection>
-        <S.TechList>
-          {project.technologies.map(t => <S.TechTag key={t}>{t}</S.TechTag>)}
-        </S.TechList>
-      </S.TechSection>
+      <S.TechStrip>
+        <S.TechStripInner>
+          {project.technologies.map(t => (
+            <S.TechTag key={t} $accent={accent}>{t}</S.TechTag>
+          ))}
+        </S.TechStripInner>
+      </S.TechStrip>
 
-      <S.Divider />
+      {hasImages && (
+        <S.ImagesSection>
+          <S.ImagesGrid $count={project.images.length}>
+            {project.images.map((src, i) => (
+              <S.ProjectImage
+                key={i}
+                src={src}
+                alt={`${data.title} ${i + 1}`}
+                onClick={() => setLightbox(src)}
+              />
+            ))}
+          </S.ImagesGrid>
+        </S.ImagesSection>
+      )}
 
       <S.ContentArea>
         {sections.map((section, idx) => (
-          <S.Section key={idx} $delay={idx * 0.04}>
-            {section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
+          <S.Section key={idx} $delay={idx * 0.035}>
+            {section.title && (
+              <S.SectionTitle $accent={accent}>{section.title}</S.SectionTitle>
+            )}
             <S.SectionContent>
-              {section.content.map((item, i) => renderItem(item, i))}
+              {section.content.map((item, i) => renderItem(item, i, accent))}
             </S.SectionContent>
           </S.Section>
         ))}
 
-        {project.technologies.length > 0 && (
-          <S.Section $delay={sections.length * 0.04}>
-            <S.SectionTitle>{lang === 'ua' ? 'Технологічний стек' : 'Tech Stack'}</S.SectionTitle>
-            <S.TechList style={{ gap: '0.4rem' }}>
-              {project.technologies.map(t => <S.TechTag key={t}>{t}</S.TechTag>)}
-            </S.TechList>
-          </S.Section>
-        )}
-
         {project.links && project.links.length > 0 && (
-          <S.Section $delay={(sections.length + 1) * 0.04}>
-            <S.SectionTitle>{lang === 'ua' ? 'Корисні посилання' : 'Useful Links'}</S.SectionTitle>
+          <S.Section $delay={(sections.length) * 0.035}>
+            <S.SectionTitle $accent={accent}>
+              {lang === 'ua' ? 'Корисні посилання' : 'Useful Links'}
+            </S.SectionTitle>
             <S.LinksSection>
               {project.links.map((link, i) => (
                 <S.LinkCard key={i} href={link.url} target="_blank" rel="noopener noreferrer">
@@ -186,22 +227,6 @@ const ProjectPage = () => {
                 </S.LinkCard>
               ))}
             </S.LinksSection>
-          </S.Section>
-        )}
-
-        {project.images && project.images.length > 0 && (
-          <S.Section $delay={(sections.length + 2) * 0.04}>
-            <S.SectionTitle>{lang === 'ua' ? 'Скріншоти' : 'Screenshots'}</S.SectionTitle>
-            <S.ImagesGrid>
-              {project.images.map((src, i) => (
-                <S.ProjectImage
-                  key={i}
-                  src={src}
-                  alt={`${data.title} screenshot ${i + 1}`}
-                  onClick={() => setLightbox(src)}
-                />
-              ))}
-            </S.ImagesGrid>
           </S.Section>
         )}
       </S.ContentArea>
