@@ -93,9 +93,9 @@ const Hero = () => {
             </QuoteWrapper>
 
             <ButtonGroup>
-              <Button 
+              <Button
                 primary
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => { track(EVENTS.BUTTON_CLICK, 'hero', { label: 'Contact Me' }); setIsModalOpen(true); }}
               >
                 <MessageCircle size={18} />
                 {i18n.language === 'ua' ? 'Написати мені' : 'Contact Me'}
@@ -106,6 +106,7 @@ const Hero = () => {
                 href="https://t.me/Memory_al"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track(EVENTS.LINK_CLICK, 'hero', { label: 'Telegram' })}
               >
                 <Send size={18} />
                 Telegram
@@ -114,6 +115,7 @@ const Hero = () => {
               <Button
                 as="a"
                 href="mailto:alexsey.solyanoy@gmail.com"
+                onClick={() => track(EVENTS.LINK_CLICK, 'hero', { label: 'Email' })}
               >
                 <Mail size={18} />
                 Email

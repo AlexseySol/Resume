@@ -1,11 +1,5 @@
-// Sends analytics events to Supabase Edge Function (track-event)
-// No auth needed — public portfolio site
-
 const EDGE_URL    = process.env.REACT_APP_ANALYTICS_URL
 const SESSION_KEY = 'analytics_sid'
-const BUFFER_KEY  = 'analytics_buf'
-const FLUSH_MS    = 30_000
-const MAX_BUF     = 15
 
 function getSessionId() {
   let sid = sessionStorage.getItem(SESSION_KEY)
@@ -16,49 +10,24 @@ function getSessionId() {
   return sid
 }
 
-function getBuffer() {
-  try { return JSON.parse(localStorage.getItem(BUFFER_KEY) || '[]') } catch { return [] }
-}
-
-function setBuffer(events) {
-  try { localStorage.setItem(BUFFER_KEY, JSON.stringify(events.slice(0, 100))) } catch {}
-}
-
-let _flushing = false
-
-export async function flush() {
-  if (_flushing || !EDGE_URL) return
-  const events = getBuffer()
-  if (!events.length) return
-
-  _flushing = true
-  setBuffer([])
-
-  try {
-    await fetch(EDGE_URL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(events),
-    })
-  } catch {
-    const cur = getBuffer()
-    setBuffer([...events, ...cur])
-  } finally {
-    _flushing = false
-  }
-}
-
+// Fire-and-forget: every event goes immediately, no buffering
 export function track(eventType, section = null, metadata = {}) {
-  const buf = getBuffer()
-  buf.push({
+  if (!EDGE_URL) return
+
+  const event = {
     session_id: getSessionId(),
     event_type: eventType,
-    section,
+    section:    section ?? null,
     metadata,
     created_at: new Date().toISOString(),
-  })
-  setBuffer(buf)
-  if (buf.length >= MAX_BUF) flush()
+  }
+
+  fetch(EDGE_URL, {
+    method:    'POST',
+    headers:   { 'Content-Type': 'application/json' },
+    body:      JSON.stringify([event]),
+    keepalive: true,
+  }).catch(() => {})
 }
 
 export function initAnalytics() {
@@ -66,10 +35,17 @@ export function initAnalytics() {
     console.warn('[analytics] REACT_APP_ANALYTICS_URL not set')
     return
   }
-  track('page_open')
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') flush()
+
+  // Page open — with full metadata
+  track('page_open', null, {
+    referrer: document.referrer || 'direct',
+    screen:   `${window.screen.width}x${window.screen.height}`,
+    lang:     navigator.language,
+    ua:       navigator.userAgent.slice(0, 120),
   })
-  setInterval(flush, FLUSH_MS)
-  window.addEventListener('beforeunload', () => flush())
+
+  // Tab hidden / visible
+  document.addEventListener('visibilitychange', () => {
+    track(document.visibilityState === 'hidden' ? 'tab_hidden' : 'tab_visible')
+  })
 }

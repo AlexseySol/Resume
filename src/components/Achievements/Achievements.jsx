@@ -1,7 +1,7 @@
-// Achievements.jsx
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trophy, Star } from 'lucide-react';
+import { useSectionTracking } from '../../hooks/useSectionTracking';
 import {
   AchievementsSection,
   TitleArea,
@@ -15,6 +15,7 @@ import {
 
 const Achievements = () => {
   const { i18n } = useTranslation();
+  const ref = useSectionTracking('achievements');
 
   const achievements = i18n.language === 'ua' 
     ? [
@@ -49,7 +50,7 @@ const Achievements = () => {
 
 
   return (
-    <AchievementsSection>
+    <AchievementsSection ref={ref}>
       <TitleArea>
         <CardIcon>
           <Trophy size={28} />

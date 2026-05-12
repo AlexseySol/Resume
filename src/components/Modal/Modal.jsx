@@ -4,6 +4,8 @@ import { Send, X } from 'lucide-react';
 
 import * as S from './Modal.styles';
 import { sendMessageToTelegram } from '../../utils/telegram';
+import { track } from '../../analytics/tracker';
+import { EVENTS } from '../../analytics/events';
 
 const Modal = ({ isOpen, onClose }) => {
   const { i18n } = useTranslation();
@@ -56,6 +58,7 @@ const Modal = ({ isOpen, onClose }) => {
 
     try {
       await sendMessageToTelegram(name, email, contactMethod, message);
+      track(EVENTS.CONTACT_SEND, 'hero', { name, contactMethod });
       setSuccessMessage(i18n.language === 'ua'
         ? 'Ваше повідомлення успішно надіслано!'
         : 'Your message has been sent successfully!'

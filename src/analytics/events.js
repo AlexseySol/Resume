@@ -6,4 +6,5 @@ export const EVENTS = {
   CV_DOWNLOAD:    'cv_download',
   LINK_CLICK:     'link_click',
   TAB_SWITCH:     'tab_switch',
+  BUTTON_CLICK:   'button_click',
 }
