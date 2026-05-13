@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 const TELEGRAM_API_URL = 'https://api.telegram.org/bot';
-const TELEGRAM_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN; // Токен из .env
-const TELEGRAM_CHANNEL_ID = process.env.REACT_APP_TELEGRAM_CHANNEL_ID; // Канал из .env
+const TELEGRAM_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
+const TELEGRAM_CHANNEL_ID = import.meta.env.VITE_TELEGRAM_CHANNEL_ID
 
 export const sendMessageToTelegram = async (name, email, contactMethod, message) => {
   // Форматируем текст сообщения

@@ -1,154 +1,132 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Send, X } from 'lucide-react';
-
-import * as S from './Modal.styles';
-import { sendMessageToTelegram } from '../../utils/telegram';
-import { track } from '../../analytics/tracker';
-import { EVENTS } from '../../analytics/events';
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Send } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { sendMessageToTelegram } from '../../utils/telegram'
+import { track } from '../../analytics/tracker'
+import { EVENTS } from '../../analytics/events'
 
 const Modal = ({ isOpen, onClose }) => {
-  const { i18n } = useTranslation();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    contactMethod: '',
-    message: '',
-  });
+  const { i18n } = useTranslation()
+  const ua = i18n.language === 'ua'
 
-  const [formError, setFormError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [formData, setFormData] = useState({ name: '', email: '', contactMethod: '', message: '' })
+  const [formError, setFormError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { name, email, contactMethod, message } = formData;
+    e.preventDefault()
+    const { name, email, contactMethod, message } = formData
 
     if (!name || !email || !contactMethod) {
-      setFormError(i18n.language === 'ua' 
-        ? 'Всі поля, крім повідомлення, обов\'язкові!' 
-        : 'All fields except message are required!'
-      );
-      return;
+      setFormError(ua ? "Всі поля, крім повідомлення, обов'язкові!" : 'All fields except message are required!')
+      return
     }
 
-    if (!validateEmail(email)) {
-      setFormError(i18n.language === 'ua'
-        ? 'Невірний формат email!'
-        : 'Invalid email format!'
-      );
-      return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setFormError(ua ? 'Невірний формат email!' : 'Invalid email format!')
+      return
     }
 
-    setFormError('');
-    setIsSubmitting(true);
+    setFormError('')
+    setIsSubmitting(true)
 
     try {
-      await sendMessageToTelegram(name, email, contactMethod, message);
-      track(EVENTS.CONTACT_SEND, 'hero', { name, contactMethod });
-      setSuccessMessage(i18n.language === 'ua'
-        ? 'Ваше повідомлення успішно надіслано!'
-        : 'Your message has been sent successfully!'
-      );
+      await sendMessageToTelegram(name, email, contactMethod, message)
+      track(EVENTS.CONTACT_SEND, 'hero', { name, contactMethod })
+      setSuccess(true)
       setTimeout(() => {
-        setSuccessMessage('');
-        setFormData({ name: '', email: '', contactMethod: '', message: '' });
-        onClose();
-      }, 2000);
+        setSuccess(false)
+        setFormData({ name: '', email: '', contactMethod: '', message: '' })
+        onClose()
+      }, 2000)
     } catch (error) {
-      console.error('Error sending form data to Telegram:', error.message);
-      setFormError(i18n.language === 'ua'
-        ? 'Помилка відправки. Спробуйте пізніше.'
-        : 'Failed to send. Please try again later.'
-      );
+      setFormError(ua ? 'Помилка відправки. Спробуйте пізніше.' : 'Failed to send. Please try again later.')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
-
-  if (!isOpen) return null;
+  }
 
   return (
-    <S.ModalOverlay onClick={onClose}>
-      <S.ModalContent onClick={(e) => e.stopPropagation()}>
-        <S.CloseButton onClick={onClose}>
-          <X size={24} />
-        </S.CloseButton>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
+      <DialogContent className="max-w-md w-full">
+        <DialogHeader>
+          <DialogTitle>{ua ? "Зв'яжіться зі мною" : 'Get in Touch'}</DialogTitle>
+          {!success && (
+            <DialogDescription>
+              {ua ? 'Я відповім якомога швидше!' : 'I will reply as soon as possible!'}
+            </DialogDescription>
+          )}
+        </DialogHeader>
 
-        <S.ModalTitle>
-          {i18n.language === 'ua' ? 'Зв\'яжіться зі мною' : 'Get in Touch'}
-        </S.ModalTitle>
-
-        {successMessage ? (
-          <S.SuccessMessage>{successMessage}</S.SuccessMessage>
+        {success ? (
+          <div className="py-8 text-center">
+            <div className="text-4xl mb-3">✓</div>
+            <p className="text-sm text-muted-foreground">
+              {ua ? 'Ваше повідомлення успішно надіслано!' : 'Your message has been sent successfully!'}
+            </p>
+          </div>
         ) : (
-          <S.Form onSubmit={handleSubmit}>
-            <S.Input
-              type="text"
+          <form onSubmit={handleSubmit} className="space-y-3 mt-2">
+            <Input
               name="name"
-              placeholder={i18n.language === 'ua' ? 'Ваше ім\'я *' : 'Your name *'}
+              placeholder={ua ? "Ваше ім'я *" : 'Your name *'}
               value={formData.name}
               onChange={handleChange}
               required
             />
-            <S.Input
+            <Input
               type="email"
               name="email"
-              placeholder={i18n.language === 'ua' ? 'Ваш email *' : 'Your email *'}
+              placeholder={ua ? 'Ваш email *' : 'Your email *'}
               value={formData.email}
               onChange={handleChange}
               required
             />
-            <S.Input
-              type="text"
+            <Input
               name="contactMethod"
-              placeholder={i18n.language === 'ua' ? 'Як з вами зв\'язатися? *' : 'How can we contact you? *'}
+              placeholder={ua ? "Як з вами зв'язатися? *" : 'How can we contact you? *'}
               value={formData.contactMethod}
               onChange={handleChange}
               required
             />
-            <S.TextArea
+            <Textarea
               name="message"
-              placeholder={i18n.language === 'ua' ? 'Ваше повідомлення' : 'Your message'}
+              placeholder={ua ? 'Ваше повідомлення' : 'Your message'}
               value={formData.message}
               onChange={handleChange}
-              rows="4"
+              rows={4}
             />
-            {formError && <S.ErrorMessage>{formError}</S.ErrorMessage>}
-            <S.SubmitButton type="submit" disabled={isSubmitting}>
-              <Send size={18} />
-              {isSubmitting 
-                ? (i18n.language === 'ua' ? 'Відправка...' : 'Sending...')
-                : (i18n.language === 'ua' ? 'Надіслати' : 'Send Message')
-              }
-            </S.SubmitButton>
-          </S.Form>
-        )}
 
-        {!successMessage && (
-          <S.Subtitle>
-            {i18n.language === 'ua'
-              ? 'Я відповім якомога швидше!'
-              : 'I will reply as soon as possible!'
-            }
-          </S.Subtitle>
-        )}
-      </S.ModalContent>
-    </S.ModalOverlay>
-  );
-};
+            {formError && (
+              <p className="text-xs text-red-400">{formError}</p>
+            )}
 
-export default Modal;
+            <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
+              <Send className="mr-2 h-4 w-4" />
+              {isSubmitting
+                ? (ua ? 'Відправка...' : 'Sending...')
+                : (ua ? 'Надіслати' : 'Send Message')}
+            </Button>
+          </form>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export default Modal

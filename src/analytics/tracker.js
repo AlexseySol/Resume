@@ -1,5 +1,9 @@
-const EDGE_URL    = process.env.REACT_APP_ANALYTICS_URL
+const EDGE_URL    = import.meta.env.VITE_ANALYTICS_URL
 const SESSION_KEY = 'analytics_sid'
+const INIT_KEY    = 'analytics_init'
+
+// Module-level — survive HMR without duplicating listeners
+const depthFired = new Set()
 
 function getSessionId() {
   let sid = sessionStorage.getItem(SESSION_KEY)
@@ -12,7 +16,7 @@ function getSessionId() {
 
 export function track(eventType, section = null, metadata = {}) {
   if (!EDGE_URL) {
-    console.warn('[analytics] REACT_APP_ANALYTICS_URL not set — event dropped:', eventType)
+    console.warn('[analytics] VITE_ANALYTICS_URL not set — event dropped:', eventType)
     return
   }
 
@@ -34,49 +38,59 @@ export function track(eventType, section = null, metadata = {}) {
   }).catch(err => console.error('[analytics] fetch error:', err))
 }
 
+// Tab visibility — once per type per session (no spam on repeated switches)
+function onVisibilityChange() {
+  const type = document.visibilityState === 'hidden' ? 'tab_hidden' : 'tab_visible'
+  if (sessionStorage.getItem(type)) return
+  sessionStorage.setItem(type, '1')
+  track(type)
+}
+
+function onPageHide() {
+  track('page_close', null, { time_on_page: Math.round(performance.now() / 1000) })
+}
+
+function onScroll() {
+  const depths  = [25, 50, 75, 100]
+  const scrolled = window.scrollY + window.innerHeight
+  const total    = document.documentElement.scrollHeight
+  const pct      = Math.round((scrolled / total) * 100)
+
+  for (const d of depths) {
+    if (pct >= d && !depthFired.has(d)) {
+      depthFired.add(d)
+      track('scroll_depth', null, { depth: d })
+    }
+  }
+
+  if (depthFired.size === depths.length) {
+    window.removeEventListener('scroll', onScroll)
+  }
+}
+
 export function initAnalytics() {
   if (!EDGE_URL) {
-    console.warn('[analytics] REACT_APP_ANALYTICS_URL not set — tracking disabled')
+    console.warn('[analytics] VITE_ANALYTICS_URL not set — tracking disabled')
     return
   }
 
-  track('page_open', null, {
-    referrer: document.referrer || 'direct',
-    screen:   `${window.screen.width}x${window.screen.height}`,
-    lang:     navigator.language,
-    ua:       navigator.userAgent.slice(0, 120),
-  })
-
-  // Tab hidden / visible
-  document.addEventListener('visibilitychange', () => {
-    track(document.visibilityState === 'hidden' ? 'tab_hidden' : 'tab_visible')
-  })
-
-  // Page close
-  window.addEventListener('pagehide', () => {
-    track('page_close', null, { time_on_page: Math.round(performance.now() / 1000) })
-  })
-
-  // Scroll depth — fires once per threshold
-  const depths = [25, 50, 75, 100]
-  const fired  = new Set()
-
-  const onScroll = () => {
-    const scrolled = window.scrollY + window.innerHeight
-    const total    = document.documentElement.scrollHeight
-    const pct      = Math.round((scrolled / total) * 100)
-
-    for (const d of depths) {
-      if (pct >= d && !fired.has(d)) {
-        fired.add(d)
-        track('scroll_depth', null, { depth: d })
-      }
-    }
-
-    if (fired.size === depths.length) {
-      window.removeEventListener('scroll', onScroll, { passive: true })
-    }
+  // page_open fires once per browser session (survives HMR)
+  if (!sessionStorage.getItem(INIT_KEY)) {
+    sessionStorage.setItem(INIT_KEY, '1')
+    track('page_open', null, {
+      referrer: document.referrer || 'direct',
+      screen:   `${window.screen.width}x${window.screen.height}`,
+      lang:     navigator.language,
+      ua:       navigator.userAgent.slice(0, 120),
+    })
   }
 
+  // Remove before adding — if HMR re-runs initAnalytics, no duplicate listeners
+  document.removeEventListener('visibilitychange', onVisibilityChange)
+  window.removeEventListener('pagehide', onPageHide)
+  window.removeEventListener('scroll', onScroll)
+
+  document.addEventListener('visibilitychange', onVisibilityChange)
+  window.addEventListener('pagehide', onPageHide)
   window.addEventListener('scroll', onScroll, { passive: true })
 }
